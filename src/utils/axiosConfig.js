@@ -1,8 +1,14 @@
 import axios from "axios";
 
-const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL + "/api/v1",
-  withCredentials: true, // ✅ send cookies on cross-origin requests
+axios.defaults.withCredentials = true; // Ensure cookies (JWTs) are sent with requests
+
+const API = process.env.VITE_BACKEND_URL || "https://mini-backend-a8ay.onrender.com";
+
+export const axiosInstance = axios.create({
+  baseURL: API,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 export default axiosInstance;
