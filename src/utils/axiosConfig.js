@@ -1,11 +1,10 @@
 import axios from "axios";
 
-axios.defaults.withCredentials = true; // Ensure cookies (JWTs) are sent with requests
+const API = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000"; // ✅ Correct way for Vite env
 
-const API = process.env.VITE_BACKEND_URL || "https://mini-backend-a8ay.onrender.com";
-
-export const axiosInstance = axios.create({
+const axiosInstance = axios.create({
   baseURL: API,
+  withCredentials: true, // ✅ Allow sending cookies
   headers: {
     "Content-Type": "application/json",
   },
