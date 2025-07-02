@@ -18,7 +18,7 @@ import {
 import Header from "../layout/Header";
 import AddBookPopup from "../popups/AddBookPopup";
 import ReadBookPopup from "../popups/ReadBookPopup";
-import RecordBookPopup from "../popups/RecordPopup";
+import RecordBookPopup from "../popups/RecordBookPopup";
 
 const BookManagement = () => {
   const dispatch = useDispatch();
