@@ -1,11 +1,11 @@
-// frontend/src/axios/axiosConfig.js
+// frontend/src/utils/axiosConfig.js
 import axios from "axios";
 
-const API = `${import.meta.env.VITE_BACKEND_URL}/api/v1`;
+const API = "https://mini-backend-a8ay.onrender.com/api/v1";
 
 const axiosInstance = axios.create({
   baseURL: API,
-  withCredentials: true, // ✅ Send cookies (needed for auth)
+  withCredentials: true, // ✅ Required for sending cookies
   headers: {
     "Content-Type": "application/json",
   },
