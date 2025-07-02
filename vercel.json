@@ -6,13 +6,13 @@
       "use": "@vercel/static-build"
     }
   ],
-  "env": {
-    "VITE_BACKEND_URL": "https://mini-backend-a8ay.onrender.com"
-  },
   "routes": [
     {
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ]
+  ],
+  "env": {
+    "VITE_BACKEND_URL": "https://mini-backend-a8ay.onrender.com"
+  }
 }
