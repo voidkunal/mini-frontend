@@ -212,7 +212,6 @@ export const logout = () => async (dispatch) => {
     dispatch(resetAuthSlice());
   }
 };
-
 export const getUser = () => async (dispatch) => {
   try {
     dispatch(getUserRequest());
@@ -221,10 +220,9 @@ export const getUser = () => async (dispatch) => {
   } catch (err) {
     const status = err?.response?.status;
     const message = err?.response?.data?.message;
-    const isExpected = status === 400 && message === "User is not authenticated";
 
-    if (isExpected) {
-      dispatch(getUserFailed(null));
+    if (status === 400 && message === "User is not authenticated") {
+      dispatch(getUserFailed(null)); // Not an error
       return;
     }
 
