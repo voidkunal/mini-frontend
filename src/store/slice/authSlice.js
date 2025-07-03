@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axiosInstance from "../../utils/axiosConfig"; // 💡 Replaced axios with custom instance
+import axiosInstance from "../../utils/axiosConfig"; // Uses baseURL + withCredentials
 
 const initialState = {
   loading: false,
@@ -169,7 +169,7 @@ export const {
 
 export default authSlice.reducer;
 
-// ------------------ Thunks ------------------
+// ==================== THUNKS ==================== //
 
 export const register = (data) => async (dispatch) => {
   try {
@@ -186,7 +186,6 @@ export const otpVerification = (email, otp) => async (dispatch) => {
     dispatch(otpVerificationRequest());
     const { data: res } = await axiosInstance.post(`/auth/verify-otp`, { email, otp });
     dispatch(otpVerificationSuccess(res));
-    if (res.token) localStorage.setItem("token", res.token); // optional
   } catch (err) {
     dispatch(otpVerificationFailed(err?.response?.data?.message || "OTP verification failed"));
   }
@@ -197,7 +196,6 @@ export const login = (data) => async (dispatch) => {
     dispatch(loginRequest());
     const { data: res } = await axiosInstance.post(`/auth/login`, data);
     dispatch(loginSuccess(res));
-    if (res.token) localStorage.setItem("token", res.token); // optional
   } catch (err) {
     dispatch(loginFailed(err?.response?.data?.message || "Login failed"));
   }
@@ -206,12 +204,12 @@ export const login = (data) => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   try {
     dispatch(logoutRequest());
-    const { data } = await axiosInstance.get(`/auth/logout`);
-    dispatch(logoutSuccess(data.message));
-    dispatch(resetAuthSlice());
-    localStorage.removeItem("token");
+    await axiosInstance.get(`/auth/logout`);
+    dispatch(logoutSuccess("Logged out successfully."));
   } catch (err) {
     dispatch(logoutFailed(err?.response?.data?.message || "Logout failed"));
+  } finally {
+    dispatch(resetAuthSlice());
   }
 };
 
@@ -219,7 +217,7 @@ export const getUser = () => async (dispatch) => {
   try {
     dispatch(getUserRequest());
     const { data } = await axiosInstance.get(`/auth/me`);
-    dispatch(getUserSuccess(data.data));
+    dispatch(getUserSuccess({ user: data.user }));
   } catch (err) {
     const status = err?.response?.status;
     const message = err?.response?.data?.message;
