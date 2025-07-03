@@ -1,9 +1,8 @@
-// ✅ Fixed bookSlice.js to include proper fetchAllBooks export
-import { createSlice } from '@reduxjs/toolkit';
-import axiosInstance from '../../utils/axiosConfig';
+import { createSlice } from "@reduxjs/toolkit";
+import axiosInstance from "../../utils/axiosConfig";
 
 const bookSlice = createSlice({
-  name: 'book',
+  name: "book",
   initialState: {
     books: [],
     loading: false,
@@ -14,6 +13,7 @@ const bookSlice = createSlice({
     fetchBooksRequest: (state) => {
       state.loading = true;
       state.error = null;
+      state.message = null;
     },
     fetchBooksSuccess: (state, action) => {
       state.books = action.payload;
@@ -29,7 +29,7 @@ const bookSlice = createSlice({
     },
     addBookSuccess: (state, action) => {
       state.loading = false;
-      state.message = action.payload?.message || "Book added successfully";
+      state.message = action.payload?.message || "Book added";
     },
     addBookFailed: (state, action) => {
       state.loading = false;
@@ -53,38 +53,42 @@ export const {
   resetBookSlice,
 } = bookSlice.actions;
 
-// ✅ Thunk: Fetch All Books
+// Thunks
 export const fetchAllBooks = () => async (dispatch) => {
   dispatch(fetchBooksRequest());
   try {
     const res = await axiosInstance.get("/book/all");
     dispatch(fetchBooksSuccess(res.data.books));
-  } catch (err) {
-    dispatch(fetchBooksFailed(err?.response?.data?.message || "Failed to fetch books"));
+  } catch (error) {
+    const errMsg = error?.response?.data?.message || "Failed to fetch books";
+    dispatch(fetchBooksFailed(errMsg));
   }
 };
 
-// ✅ Thunk: Add Book
-export const addBook = (data) => async (dispatch) => {
+export const addBook = (formData) => async (dispatch) => {
   dispatch(addBookRequest());
   try {
-    const res = await axiosInstance.post("/book/admin/add", data, {
-      headers: { "Content-Type": "multipart/form-data" },
+    const res = await axiosInstance.post("/book/admin/add", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     });
     dispatch(addBookSuccess(res.data));
-  } catch (err) {
-    dispatch(addBookFailed(err?.response?.data?.message || "Failed to add book"));
+    dispatch(fetchAllBooks());
+  } catch (error) {
+    const errMsg = error?.response?.data?.message || "Failed to add book";
+    dispatch(addBookFailed(errMsg));
   }
 };
 
-// ✅ Thunk: Delete Book
-export const deleteBook = (id) => async (dispatch) => {
+export const deleteBook = (bookId) => async (dispatch) => {
   dispatch(fetchBooksRequest());
   try {
-    await axiosInstance.delete(`/book/delete/${id}`);
+    await axiosInstance.delete(`/book/delete/${bookId}`);
     dispatch(fetchAllBooks());
-  } catch (err) {
-    dispatch(fetchBooksFailed(err?.response?.data?.message || "Failed to delete book"));
+  } catch (error) {
+    const errMsg = error?.response?.data?.message || "Failed to delete book";
+    dispatch(fetchBooksFailed(errMsg));
   }
 };
 
