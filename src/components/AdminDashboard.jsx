@@ -1,3 +1,5 @@
+
+// ✅ AdminDashboard.jsx (Improved UI + Responsive)
 import React, { useEffect, useState } from "react";
 import adminIcon from "../assets/pointing.png";
 import usersIcon from "../assets/people-black.png";
@@ -33,7 +35,6 @@ ChartJS.register(
 
 const AdminDashboard = () => {
   const dispatch = useDispatch();
-
   const { user } = useSelector((state) => state.auth);
   const { users } = useSelector((state) => state.user);
   const { books } = useSelector((state) => state.book);
@@ -50,21 +51,16 @@ const AdminDashboard = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    const numberOfUsers = users?.filter((u) => u.role === "user") || [];
-    const numberOfAdmins = users?.filter((u) => u.role === "Admin") || [];
+    const userCount = users?.filter((u) => u.role === "user").length || 0;
+    const adminCount = users?.filter((u) => u.role === "Admin").length || 0;
+    const borrowedCount = allBorrowedBooks?.filter((b) => b.returned === null).length || 0;
+    const returnedCount = allBorrowedBooks?.filter((b) => b.returnDate !== null).length || 0;
 
-    setTotalUsers(numberOfUsers.length);
-    setTotalAdmin(numberOfAdmins.length);
+    setTotalUsers(userCount);
+    setTotalAdmin(adminCount);
     setTotalBooks(books?.length || 0);
-
-    const numberOfTotalBorrowedBooks =
-      allBorrowedBooks?.filter((book) => book.returned === null) || [];
-
-    const numberOfTotalReturnedBooks =
-      allBorrowedBooks?.filter((book) => book.returnDate !== null) || [];
-
-    setTotalBorrowedBooks(numberOfTotalBorrowedBooks.length);
-    setTotalReturnedBooks(numberOfTotalReturnedBooks.length);
+    setTotalBorrowedBooks(borrowedCount);
+    setTotalReturnedBooks(returnedCount);
   }, [users, books, allBorrowedBooks]);
 
   const data = {
@@ -79,89 +75,84 @@ const AdminDashboard = () => {
   };
 
   return (
-    <main className="relative flex-1 p-4 md:p-6 pt-24 bg-gradient-to-br from-gray-50 to-gray-200 min-h-screen">
+    <main className="relative flex-1 p-4 pt-24 sm:pt-28 bg-gradient-to-br from-gray-50 to-gray-200 min-h-screen">
       <Header />
 
-      <div className="mb-10 text-center">
+      <div className="mb-8 text-center">
         <h1 className="text-3xl font-bold text-gray-800">📊 Admin Control Panel</h1>
-        <p className="text-gray-600 text-sm md:text-base">
-          Manage users, books, and monitor your library insights
-        </p>
+        <p className="text-gray-600 text-sm sm:text-base">Manage users, books, and monitor your library insights</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Pie Chart Section */}
-        <div className="bg-white shadow-md rounded-xl p-4 flex flex-col items-center">
-          <h2 className="text-lg md:text-xl font-semibold text-center text-gray-800 mb-4">
-            📈 Borrowing Stats
-          </h2>
-          <div className="w-full max-w-xs md:max-w-sm">
-            <Pie data={data} options={{ cutout: 80 }} />
+        {/* Chart */}
+        <div className="bg-white shadow-lg rounded-xl p-4 flex flex-col items-center">
+          <h2 className="text-lg font-semibold mb-4 text-gray-800">📈 Borrowing Stats</h2>
+          <div className="w-full max-w-xs">
+            <Pie data={data} options={{ cutout: 60 }} />
           </div>
-          <div className="mt-6 space-y-2">
-            <div className="flex items-center gap-2 text-sm text-gray-700">
-              <span className="w-4 h-4 rounded-full bg-[#3D3E3E]"></span>
-              Total Borrowed Books
+          <div className="mt-6 text-sm text-gray-700 space-y-2">
+            <div className="flex items-center gap-2">
+              <span className="w-4 h-4 bg-[#3D3E3E] rounded-full"></span> Borrowed Books
             </div>
-            <div className="flex items-center gap-2 text-sm text-gray-700">
-              <span className="w-4 h-4 rounded-full bg-[#151619]"></span>
-              Total Returned Books
+            <div className="flex items-center gap-2">
+              <span className="w-4 h-4 bg-[#151619] rounded-full"></span> Returned Books
             </div>
           </div>
         </div>
 
-        {/* Stats Section */}
+        {/* Stats */}
         <div className="flex flex-col gap-6 justify-center">
-          {[{
-            icon: usersIcon,
-            label: "Total User Base",
-            value: totalUsers
-          }, {
-            icon: bookIcon,
-            label: "Total Books Count",
-            value: totalBooks
-          }, {
-            icon: adminIcon,
-            label: "Total Admins in Database",
-            value: totalAdmin
-          }].map((stat, index) => (
-            <div
-              key={index}
-              className="flex items-center gap-4 p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition"
-            >
-              <div className="p-3 bg-yellow-100 rounded-lg">
-                <img src={stat.icon} alt={stat.label} className="w-6 h-6" />
-              </div>
-              <div>
-                <h4 className="text-2xl font-bold text-gray-900">{stat.value}</h4>
-                <p className="text-gray-600 text-sm">{stat.label}</p>
-              </div>
+          <div className="flex items-center gap-4 p-4 rounded-xl bg-white shadow hover:shadow-xl transition">
+            <div className="p-3 bg-yellow-100 rounded-lg">
+              <img src={usersIcon} alt="Users" className="w-6 h-6" />
             </div>
-          ))}
+            <div>
+              <h4 className="text-2xl font-bold text-gray-800">{totalUsers}</h4>
+              <p className="text-gray-500 text-sm">Total Users</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4 p-4 rounded-xl bg-white shadow hover:shadow-xl transition">
+            <div className="p-3 bg-yellow-100 rounded-lg">
+              <img src={bookIcon} alt="Books" className="w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="text-2xl font-bold text-gray-800">{totalBooks}</h4>
+              <p className="text-gray-500 text-sm">Total Books</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4 p-4 rounded-xl bg-white shadow hover:shadow-xl transition">
+            <div className="p-3 bg-yellow-100 rounded-lg">
+              <img src={adminIcon} alt="Admins" className="w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="text-2xl font-bold text-gray-800">{totalAdmin}</h4>
+              <p className="text-gray-500 text-sm">Admins Count</p>
+            </div>
+          </div>
         </div>
 
-        {/* Admin Info */}
+        {/* Profile & Quote */}
         <div className="space-y-6">
-          <div className="bg-white rounded-xl p-6 shadow-md text-center">
+          <div className="bg-white p-6 rounded-xl shadow text-center flex flex-col items-center">
             <img
               src={user?.avatar?.url || "https://via.placeholder.com/150"}
               alt="Admin Avatar"
-              className="w-24 h-24 rounded-full object-cover mx-auto mb-4 shadow"
+              className="w-24 h-24 rounded-full object-cover mb-3"
             />
-            <h2 className="text-lg font-semibold text-gray-800">{user?.name}</h2>
-            <p className="text-gray-600 text-sm mt-1">
-              Welcome to your Admin Dashboard.
-              <br />Manage settings and monitor statistics.
-            </p>
+            <h3 className="text-lg font-semibold text-gray-800">{user?.name}</h3>
+            <p className="text-gray-500 text-sm">Welcome to your Admin Dashboard</p>
           </div>
 
-          <div className="bg-white rounded-xl p-6 shadow-md relative h-48">
-            <p className="text-gray-700 text-sm leading-relaxed">
-              “Your library is your paradise.”<br />
-              A good system is not just shelves and books but who manages them.<br />
+          <div className="bg-white p-6 rounded-xl shadow text-sm text-gray-600 relative h-48 flex flex-col justify-between">
+            <p>
+              "Your library is your paradise." <br />
+              A good system isn't just shelves and books—it's who manages them.
+              <br />
               Stay organized. Stay focused.
             </p>
-            <p className="text-gray-500 text-xs absolute bottom-3 right-4">~ Void Tech Team</p>
+            <p className="text-right text-xs text-gray-400">~ Void Tech Team</p>
           </div>
         </div>
       </div>
