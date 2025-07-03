@@ -12,9 +12,6 @@ import Contact from "./pages/Contact";
 import LandingPage from "./pages/LandingPage";
 
 import SideBar from "./layout/SideBar";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
 import AdminDashboard from "./components/AdminDashboard";
 import UserDashboard from "./components/UserDashboard";
 import Books from "./components/BookManagement";
@@ -22,13 +19,16 @@ import Catalog from "./components/Catalog";
 import Users from "./components/Users";
 import MyBorrowedBooks from "./components/MyBorrowedBooks";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   const [initializing, setInitializing] = useState(true);
   const [selectedComponent, setSelectedComponent] = useState(null);
 
-  // ✅ Fetch user on app load (cookie will handle auth detection)
+  // ✅ Fetch user on initial load using cookie
   useEffect(() => {
     dispatch(getUser())
       .catch((error) => {
@@ -37,7 +37,7 @@ const App = () => {
       .finally(() => setInitializing(false));
   }, [dispatch]);
 
-  // ✅ Set initial dashboard component
+  // ✅ Set default dashboard component after user is loaded
   useEffect(() => {
     if (user?.role === "Admin") {
       setSelectedComponent("AdminDashboard");
@@ -46,10 +46,10 @@ const App = () => {
     }
   }, [user]);
 
-  // ✅ Dynamic render content based on role
+  // ✅ Render dynamic component inside the layout
   const renderComponent = () => {
     if (user?.role === "Admin") {
-      switch (selectedComponent || "AdminDashboard") {
+      switch (selectedComponent) {
         case "AdminDashboard":
           return <AdminDashboard />;
         case "Books":
@@ -62,7 +62,7 @@ const App = () => {
           return <AdminDashboard />;
       }
     } else if (user?.role === "user") {
-      switch (selectedComponent || "UserDashboard") {
+      switch (selectedComponent) {
         case "UserDashboard":
           return <UserDashboard />;
         case "Books":
@@ -79,7 +79,7 @@ const App = () => {
 
   if (initializing) {
     return (
-      <div className="flex justify-center items-center min-h-screen text-lg font-medium">
+      <div className="flex items-center justify-center min-h-screen text-xl font-semibold text-gray-600">
         Loading...
       </div>
     );
@@ -87,32 +87,36 @@ const App = () => {
 
   return (
     <Router>
-      <ToastContainer theme="colored" />
+      <ToastContainer />
       <Routes>
-        <Route path="/" element={!isAuthenticated ? <LandingPage /> : <Navigate to="*" />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/password/forgot" element={<ForgotPassword />} />
-        <Route path="/otp-verification/:email" element={<OTP />} />
-        <Route path="/password/reset/:token" element={<ResetPassword />} />
+        {/* PUBLIC ROUTES */}
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login />} />
+        <Route path="/register" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Register />} />
+        <Route path="/otp" element={<OTP />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/contact" element={<Contact />} />
 
+        {/* PROTECTED DASHBOARD */}
         <Route
-          path="*"
+          path="/dashboard"
           element={
             isAuthenticated ? (
               <div className="flex">
-                <SideBar
-                  setSelectedComponent={setSelectedComponent}
-                  isSideBarOpen={true}
-                  setIsSideBarOpen={() => {}}
-                />
-                <main className="flex-1 ml-64 p-6">{renderComponent()}</main>
+                <SideBar setSelectedComponent={setSelectedComponent} />
+                <main className="flex-1 p-4">{renderComponent()}</main>
               </div>
             ) : (
-              <Navigate to="/" />
+              <Navigate to="/login" replace />
             )
           }
+        />
+
+        {/* 404 */}
+        <Route
+          path="*"
+          element={<div className="p-10 text-2xl text-center text-red-500">404 - Page Not Found</div>}
         />
       </Routes>
     </Router>
