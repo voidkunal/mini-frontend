@@ -1,5 +1,5 @@
-// ✅ Fixed BookManagement.jsx with proper fetchAllBooks & responsive modern UI
-import React, { useEffect } from "react";
+// ✅ Final Responsive BookManagement.jsx with correct UI layout
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllBooks, deleteBook } from "../store/slice/bookSlice";
 import { toggleAddBookPopup } from "../store/slice/popupSlice";
@@ -9,6 +9,7 @@ const BookManagement = () => {
   const dispatch = useDispatch();
   const { books, loading, error } = useSelector((state) => state.book);
   const { addBookPopup } = useSelector((state) => state.popup);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     dispatch(fetchAllBooks());
@@ -20,59 +21,77 @@ const BookManagement = () => {
     }
   };
 
+  const filteredBooks = books.filter((book) =>
+    book.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div className="p-4">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold">Books Management</h2>
-        <button
-          className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded shadow"
-          onClick={() => dispatch(toggleAddBookPopup())}
-        >
-          Add Book
-        </button>
+    <div className="p-4 sm:p-6 md:p-8">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6">
+        <h2 className="text-2xl font-bold mb-4 sm:mb-0">Book Management</h2>
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 items-start sm:items-center">
+          <button
+            className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded shadow"
+            onClick={() => dispatch(toggleAddBookPopup())}
+          >
+            Add Book
+          </button>
+          <input
+            type="text"
+            placeholder="Search books..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="border border-gray-300 rounded px-3 py-2 w-full sm:w-64"
+          />
+        </div>
       </div>
 
-      {/* Book List Table */}
       {loading ? (
         <p>Loading books...</p>
       ) : error ? (
         <p className="text-red-600">{error}</p>
       ) : (
         <div className="overflow-x-auto">
-          <table className="min-w-full border border-gray-200">
-            <thead>
-              <tr className="bg-gray-100 text-left text-sm">
-                <th className="p-2 border">Title</th>
-                <th className="p-2 border">Author</th>
-                <th className="p-2 border hidden sm:table-cell">Description</th>
-                <th className="p-2 border">Qty</th>
-                <th className="p-2 border">Price</th>
-                <th className="p-2 border">Actions</th>
+          <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="py-2 px-4 text-left text-sm">#</th>
+                <th className="py-2 px-4 text-left text-sm">Title</th>
+                <th className="py-2 px-4 text-left text-sm">Author</th>
+                <th className="py-2 px-4 text-left text-sm">Qty</th>
+                <th className="py-2 px-4 text-left text-sm">Price</th>
+                <th className="py-2 px-4 text-left text-sm">Availability</th>
+                <th className="py-2 px-4 text-left text-sm">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {books.length === 0 ? (
+              {filteredBooks.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="p-4 text-center text-gray-500">
+                  <td colSpan="7" className="text-center py-4 text-gray-500">
                     No books found.
                   </td>
                 </tr>
               ) : (
-                books.map((book) => (
-                  <tr key={book._id} className="border-t text-sm">
-                    <td className="p-2 border">{book.title}</td>
-                    <td className="p-2 border">{book.author}</td>
-                    <td className="p-2 border hidden sm:table-cell">
-                      {book.description?.slice(0, 60)}...
-                    </td>
-                    <td className="p-2 border">{book.quantity}</td>
-                    <td className="p-2 border">₹{book.price}</td>
-                    <td className="p-2 border space-x-2">
+                filteredBooks.map((book, index) => (
+                  <tr key={book._id} className="border-t hover:bg-gray-50">
+                    <td className="py-2 px-4 text-sm">{index + 1}</td>
+                    <td className="py-2 px-4 text-sm">{book.title}</td>
+                    <td className="py-2 px-4 text-sm">{book.author}</td>
+                    <td className="py-2 px-4 text-sm">{book.quantity}</td>
+                    <td className="py-2 px-4 text-sm">₹{book.price}</td>
+                    <td className="py-2 px-4 text-sm text-green-600">Available</td>
+                    <td className="py-2 px-4 text-sm space-x-2">
                       <button
-                        className="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600"
+                        className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 text-xs"
                         onClick={() => handleDelete(book._id)}
                       >
                         Delete
+                      </button>
+                      <button className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 text-xs">
+                        View
+                      </button>
+                      <button className="bg-gray-500 text-white px-2 py-1 rounded hover:bg-gray-600 text-xs">
+                        Edit
                       </button>
                     </td>
                   </tr>
@@ -83,7 +102,6 @@ const BookManagement = () => {
         </div>
       )}
 
-      {/* Popup */}
       {addBookPopup && <AddBookPopup />}
     </div>
   );
