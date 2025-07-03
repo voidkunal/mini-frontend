@@ -1,3 +1,4 @@
+// App.jsx (Updated)
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "./store/slice/authSlice";
@@ -18,6 +19,7 @@ import Books from "./components/BookManagement";
 import Catalog from "./components/Catalog";
 import Users from "./components/Users";
 import MyBorrowedBooks from "./components/MyBorrowedBooks";
+import Header from "./layout/Header";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -27,8 +29,8 @@ const App = () => {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   const [initializing, setInitializing] = useState(true);
   const [selectedComponent, setSelectedComponent] = useState(null);
+  const [isSideBarOpen, setIsSideBarOpen] = useState(true); // For toggle control
 
-  // ✅ Fetch user on initial load using cookie
   useEffect(() => {
     dispatch(getUser())
       .catch((error) => {
@@ -37,7 +39,6 @@ const App = () => {
       .finally(() => setInitializing(false));
   }, [dispatch]);
 
-  // ✅ Set default dashboard component after user is loaded
   useEffect(() => {
     if (user?.role === "Admin") {
       setSelectedComponent("AdminDashboard");
@@ -46,7 +47,6 @@ const App = () => {
     }
   }, [user]);
 
-  // ✅ Render dynamic component inside the layout
   const renderComponent = () => {
     if (user?.role === "Admin") {
       switch (selectedComponent) {
@@ -103,9 +103,16 @@ const App = () => {
           path="/dashboard"
           element={
             isAuthenticated ? (
-              <div className="flex">
-                <SideBar setSelectedComponent={setSelectedComponent} />
-                <main className="flex-1 p-4">{renderComponent()}</main>
+              <div className="flex w-full">
+                <SideBar
+                  setSelectedComponent={setSelectedComponent}
+                  isSideBarOpen={isSideBarOpen}
+                  setIsSideBarOpen={setIsSideBarOpen}
+                />
+                <div className="flex-1 relative min-h-screen">
+                  <Header setIsSideBarOpen={setIsSideBarOpen} />
+                  {renderComponent()}
+                </div>
               </div>
             ) : (
               <Navigate to="/login" replace />

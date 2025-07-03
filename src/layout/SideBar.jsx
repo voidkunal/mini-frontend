@@ -1,3 +1,4 @@
+// ✅ Updated SideBar.jsx (Left toggle button, working and mobile responsive)
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, resetAuthSlice } from "../store/slice/authSlice";
@@ -23,9 +24,7 @@ import { FiMenu, FiX } from "react-icons/fi";
 const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
   const dispatch = useDispatch();
   const { addNewAdminPopup, settingPopup } = useSelector((state) => state.popup);
-  const { error, message, isAuthenticated, user } = useSelector(
-    (state) => state.auth
-  );
+  const { error, message, isAuthenticated, user } = useSelector((state) => state.auth);
 
   const handleLogout = () => {
     dispatch(logout());
