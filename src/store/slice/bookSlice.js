@@ -1,5 +1,6 @@
+// ✅ Fixed bookSlice.js to include proper fetchAllBooks export
 import { createSlice } from '@reduxjs/toolkit';
-import axiosInstance from '../../utils/axiosConfig'; // ✅ Use axiosInstance for env-safe base URL
+import axiosInstance from '../../utils/axiosConfig';
 
 const bookSlice = createSlice({
   name: 'book',
@@ -13,28 +14,22 @@ const bookSlice = createSlice({
     fetchBooksRequest: (state) => {
       state.loading = true;
       state.error = null;
-      state.message = null;
     },
     fetchBooksSuccess: (state, action) => {
       state.books = action.payload;
       state.loading = false;
-      state.error = null;
-      state.message = null;
     },
     fetchBooksFailed: (state, action) => {
       state.loading = false;
       state.error = action.payload;
-      state.message = null;
     },
     addBookRequest: (state) => {
       state.loading = true;
       state.error = null;
-      state.message = null;
     },
     addBookSuccess: (state, action) => {
       state.loading = false;
-      state.message = action.payload?.message || 'Book added successfully';
-      state.error = null;
+      state.message = action.payload?.message || "Book added successfully";
     },
     addBookFailed: (state, action) => {
       state.loading = false;
@@ -55,52 +50,42 @@ export const {
   addBookRequest,
   addBookSuccess,
   addBookFailed,
-  resetBookSlice: resetBookSliceAction,
+  resetBookSlice,
 } = bookSlice.actions;
 
-// ------------------ Thunks ------------------ //
-
+// ✅ Thunk: Fetch All Books
 export const fetchAllBooks = () => async (dispatch) => {
   dispatch(fetchBooksRequest());
   try {
     const res = await axiosInstance.get("/book/all");
     dispatch(fetchBooksSuccess(res.data.books));
   } catch (err) {
-    const errorMsg = err?.response?.data?.message || err.message || 'Failed to fetch books';
-    dispatch(fetchBooksFailed(errorMsg));
+    dispatch(fetchBooksFailed(err?.response?.data?.message || "Failed to fetch books"));
   }
 };
 
+// ✅ Thunk: Add Book
 export const addBook = (data) => async (dispatch) => {
   dispatch(addBookRequest());
   try {
     const res = await axiosInstance.post("/book/admin/add", data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+      headers: { "Content-Type": "multipart/form-data" },
     });
     dispatch(addBookSuccess(res.data));
   } catch (err) {
-    const errorMsg = err?.response?.data?.message || err.message || 'Failed to add book';
-    dispatch(addBookFailed(errorMsg));
+    dispatch(addBookFailed(err?.response?.data?.message || "Failed to add book"));
   }
 };
 
-export const deleteBook = (bookId) => async (dispatch) => {
+// ✅ Thunk: Delete Book
+export const deleteBook = (id) => async (dispatch) => {
   dispatch(fetchBooksRequest());
   try {
-    const res = await axiosInstance.delete(`/book/delete/${bookId}`);
+    await axiosInstance.delete(`/book/delete/${id}`);
     dispatch(fetchAllBooks());
-    return { payload: { success: true, message: res.data.message } };
   } catch (err) {
-    const errorMsg = err?.response?.data?.message || err.message || "Failed to delete book";
-    dispatch(fetchBooksFailed(errorMsg));
-    return { payload: { success: false, message: errorMsg } };
+    dispatch(fetchBooksFailed(err?.response?.data?.message || "Failed to delete book"));
   }
-};
-
-export const resetBookSlice = () => (dispatch) => {
-  dispatch(resetBookSliceAction());
 };
 
 export default bookSlice.reducer;
