@@ -1,16 +1,27 @@
-import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "./slice/authSlice";
-import popupReducer from "./slice/popupSlice";
-import userReducer from "./slice/userSlice";
-import bookReducer from "./slice/bookSlice";
-import borrowReducer from "./slice/borrowSlice";
+// src/store/slice/popupSlice.js
 
-export const store = configureStore({
-  reducer: {
-    auth: authReducer,
-    popup: popupReducer,
-    user: userReducer,
-    book: bookReducer,
-    borrow: borrowReducer,
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = {
+  isPopupOpen: false,
+  popupContent: null,
+};
+
+const popupSlice = createSlice({
+  name: "popup",
+  initialState,
+  reducers: {
+    openPopup: (state, action) => {
+      state.isPopupOpen = true;
+      state.popupContent = action.payload;
+    },
+    closePopup: (state) => {
+      state.isPopupOpen = false;
+      state.popupContent = null;
+    },
   },
 });
+
+export const { openPopup, closePopup } = popupSlice.actions;
+
+export default popupSlice.reducer;
