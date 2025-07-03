@@ -1,5 +1,6 @@
+// ✅ Final Fixed bookSlice.js for Vercel Production (Cookies + HTTPS Compatible)
 import { createSlice } from "@reduxjs/toolkit";
-import axiosInstance from "../../utils/axiosConfig";
+import axiosInstance from "../../utils/axiosConfig"; // uses VITE_BACKEND_URL withCredentials
 
 const bookSlice = createSlice({
   name: "book",
@@ -18,6 +19,7 @@ const bookSlice = createSlice({
     fetchBooksSuccess: (state, action) => {
       state.books = action.payload;
       state.loading = false;
+      state.error = null;
     },
     fetchBooksFailed: (state, action) => {
       state.loading = false;
@@ -26,10 +28,11 @@ const bookSlice = createSlice({
     addBookRequest: (state) => {
       state.loading = true;
       state.error = null;
+      state.message = null;
     },
     addBookSuccess: (state, action) => {
       state.loading = false;
-      state.message = action.payload?.message || "Book added";
+      state.message = action.payload?.message || "Book added successfully";
     },
     addBookFailed: (state, action) => {
       state.loading = false;
@@ -53,42 +56,43 @@ export const {
   resetBookSlice,
 } = bookSlice.actions;
 
-// Thunks
+// ✅ Thunks
 export const fetchAllBooks = () => async (dispatch) => {
   dispatch(fetchBooksRequest());
   try {
-    const res = await axiosInstance.get("/book/all");
-    dispatch(fetchBooksSuccess(res.data.books));
-  } catch (error) {
-    const errMsg = error?.response?.data?.message || "Failed to fetch books";
-    dispatch(fetchBooksFailed(errMsg));
+    const { data } = await axiosInstance.get("/book/all");
+    dispatch(fetchBooksSuccess(data.books));
+  } catch (err) {
+    const errorMsg = err?.response?.data?.message || err.message || "Failed to fetch books";
+    dispatch(fetchBooksFailed(errorMsg));
   }
 };
 
-export const addBook = (formData) => async (dispatch) => {
+export const addBook = (bookFormData) => async (dispatch) => {
   dispatch(addBookRequest());
   try {
-    const res = await axiosInstance.post("/book/admin/add", formData, {
+    const { data } = await axiosInstance.post("/book/admin/add", bookFormData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
-    dispatch(addBookSuccess(res.data));
-    dispatch(fetchAllBooks());
-  } catch (error) {
-    const errMsg = error?.response?.data?.message || "Failed to add book";
-    dispatch(addBookFailed(errMsg));
+    dispatch(addBookSuccess(data));
+  } catch (err) {
+    const errorMsg = err?.response?.data?.message || err.message || "Failed to add book";
+    dispatch(addBookFailed(errorMsg));
   }
 };
 
 export const deleteBook = (bookId) => async (dispatch) => {
   dispatch(fetchBooksRequest());
   try {
-    await axiosInstance.delete(`/book/delete/${bookId}`);
+    const res = await axiosInstance.delete(`/book/delete/${bookId}`);
     dispatch(fetchAllBooks());
-  } catch (error) {
-    const errMsg = error?.response?.data?.message || "Failed to delete book";
-    dispatch(fetchBooksFailed(errMsg));
+    return { payload: { success: true, message: res.data.message } };
+  } catch (err) {
+    const errorMsg = err?.response?.data?.message || err.message || "Failed to delete book";
+    dispatch(fetchBooksFailed(errorMsg));
+    return { payload: { success: false, message: errorMsg } };
   }
 };
 
