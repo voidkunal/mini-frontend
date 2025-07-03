@@ -4,6 +4,15 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: 'dist', // Vercel uses this for deployment
+    outDir: 'dist',
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://mini-backend-a8ay.onrender.com',
+        changeOrigin: true,
+        secure: true,
+      },
+    },
   },
 });
