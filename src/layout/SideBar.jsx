@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+// ✅ Responsive Sidebar
+import React, { useEffect, useState } from "react";
 import logo_with_title from "../assets/logo-with-title.png";
 import logoutIcon from "../assets/logout.png";
 import closeIcon from "../assets/white-close-icon.png";
@@ -15,104 +16,113 @@ import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import AddNewAdmin from "../popups/AddNewAdmin";
 import SettingPopup from "../popups/SettingPopup";
+import { HiMenu } from "react-icons/hi";
 
-const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
+const SideBar = ({ setSelectedComponent }) => {
   const dispatch = useDispatch();
   const { addNewAdminPopup, settingPopup } = useSelector((state) => state.popup || {});
-  const { loading, error, message, isAuthenticated, user } = useSelector((state) => state.auth);
+  const { error, message, isAuthenticated, user } = useSelector((state) => state.auth);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const handleLogout = () => {
-    dispatch(logout());
-  };
+  const handleLogout = () => dispatch(logout());
 
   useEffect(() => {
-    if (error) {
-      toast.error(error);
-      dispatch(resetAuthSlice());
-    }
-    if (message) {
-      toast.success(message);
-      dispatch(resetAuthSlice());
-    }
+    if (error) toast.error(error);
+    if (message) toast.success(message);
+    if (error || message) dispatch(resetAuthSlice());
   }, [error, message, dispatch]);
+
+  const menuItems = [
+    { name: "Dashboard", icon: dashboardIcon },
+    { name: "Books", icon: bookIcon },
+  ];
 
   return (
     <>
-      <aside
-        className={`${
-          isSideBarOpen ? "left-0" : "-left-full"
-        } z-10 transition-all duration-700 md:relative md:left-0 flex w-64 bg-yellow-500 text-white flex-col h-full fixed`}
+      {/* Toggle Button */}
+      <button
+        className="fixed top-4 left-4 z-30 md:hidden bg-yellow-500 p-2 rounded-full"
+        onClick={() => setIsOpen(!isOpen)}
       >
-        <div className="px-6 py-4 my-8">
-          <img src={logo_with_title} alt="logo" />
-        </div>
+        <HiMenu size={24} className="text-white" />
+      </button>
 
-        <nav className="flex-1 px-6 space-y-2">
-          <button
-            onClick={() => setSelectedComponent("Dashboard")}
-            className="w-full py-2 font-medium bg-transparent rounded-md flex items-center space-x-2"
-          >
-            <img src={dashboardIcon} alt="dashboard" /> <span>Dashboard</span>
-          </button>
+      {/* Sidebar */}
+      <aside
+        className={`fixed top-0 left-0 h-full w-64 bg-yellow-500 text-white z-40 transform transition-transform duration-300 md:translate-x-0 ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } md:relative md:flex`}
+      >
+        <div className="flex flex-col h-full">
+          <div className="px-6 py-6">
+            <img src={logo_with_title} alt="logo" />
+          </div>
 
-          <button
-            onClick={() => setSelectedComponent("Books")}
-            className="w-full py-2 font-medium bg-transparent rounded-md flex items-center space-x-2"
-          >
-            <img src={bookIcon} alt="Books" /> <span>Books</span>
-          </button>
-
-          {isAuthenticated && user?.role === "Admin" && (
-            <>
+          <nav className="flex-1 px-6 space-y-2">
+            {menuItems.map((item) => (
               <button
-                onClick={() => setSelectedComponent("Users")}
-                className="w-full py-2 font-medium bg-transparent rounded-md flex items-center space-x-2"
+                key={item.name}
+                onClick={() => setSelectedComponent(item.name)}
+                className="w-full py-2 font-medium flex items-center space-x-2 hover:bg-yellow-600 rounded-md"
               >
-                <img src={usersIcon} alt="users" /> <span>Users</span>
+                <img src={item.icon} alt={item.name} className="w-5 h-5" />
+                <span>{item.name}</span>
               </button>
+            ))}
 
-              <button
-                onClick={() => dispatch(toggleAddNewAdminPopup())}
-                className="w-full py-2 font-medium bg-transparent rounded-md flex items-center space-x-2"
-              >
-                <RiAdminFill className="w-6 h-6" /> <span>Add New Admin</span>
-              </button>
-            </>
-          )}
+            {isAuthenticated && user?.role === "Admin" && (
+              <>
+                <button
+                  onClick={() => setSelectedComponent("Users")}
+                  className="w-full py-2 font-medium flex items-center space-x-2 hover:bg-yellow-600 rounded-md"
+                >
+                  <img src={usersIcon} alt="Users" className="w-5 h-5" />
+                  <span>Users</span>
+                </button>
 
-          <button
-            onClick={() => dispatch(toggleSettingPopup())}
-            className="w-full py-2 font-medium bg-transparent rounded-md flex items-center space-x-2"
-          >
-            <img src={settingIcon} alt="setting" />
-            <span>Update Credentials</span>
-          </button>
-        </nav>
+                <button
+                  onClick={() => dispatch(toggleAddNewAdminPopup())}
+                  className="w-full py-2 font-medium flex items-center space-x-2 hover:bg-yellow-600 rounded-md"
+                >
+                  <RiAdminFill className="w-5 h-5" /> <span>Add New Admin</span>
+                </button>
+              </>
+            )}
 
-        <div className="px-6 py-4 mt-auto">
-          <Link
-            to="/contact"
-            className="w-full py-2 font-medium bg-transparent rounded-md flex items-center space-x-2"
-          >
-            <img src={contactIcon} alt="contact" />
-            <span>Contact</span>
-          </Link>
+            <button
+              onClick={() => dispatch(toggleSettingPopup())}
+              className="w-full py-2 font-medium flex items-center space-x-2 hover:bg-yellow-600 rounded-md"
+            >
+              <img src={settingIcon} alt="Settings" className="w-5 h-5" />
+              <span>Update Credentials</span>
+            </button>
+
+            <Link
+              to="/contact"
+              className="w-full py-2 font-medium flex items-center space-x-2 hover:bg-yellow-600 rounded-md"
+            >
+              <img src={contactIcon} alt="Contact" className="w-5 h-5" />
+              <span>Contact</span>
+            </Link>
+          </nav>
+
+          <div className="px-6 py-4 mt-auto">
+            <button
+              onClick={handleLogout}
+              className="w-full py-2 font-medium flex items-center justify-center space-x-2 hover:bg-yellow-600 rounded-md"
+            >
+              <img src={logoutIcon} alt="Logout" className="w-5 h-5" />
+              <span>Log Out</span>
+            </button>
+          </div>
         </div>
 
-        <div className="px-6 py-4">
-          <button
-            onClick={handleLogout}
-            className="py-2 font-medium text-center bg-transparent rounded-md flex items-center justify-center space-x-5 mb-7 mx-auto w-fit"
-          >
-            <img src={logoutIcon} alt="logout" /> <span>Log Out</span>
-          </button>
-        </div>
-
+        {/* Close icon */}
         <img
           src={closeIcon}
-          alt="closeIcon"
-          onClick={() => setIsSideBarOpen(!isSideBarOpen)}
-          className="h-fit w-fit absolute top-0 right-4 mt-4 block md:hidden cursor-pointer"
+          alt="Close"
+          className="absolute top-4 right-4 cursor-pointer md:hidden"
+          onClick={() => setIsOpen(false)}
         />
       </aside>
 
