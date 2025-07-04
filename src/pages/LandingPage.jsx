@@ -67,18 +67,28 @@ const LandingPage = () => {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="bg-white/10 backdrop-blur-lg p-6 sm:p-10 rounded-3xl shadow-xl w-full max-w-5xl flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 overflow-hidden"
-        style={{ maxHeight: "90vh" }} // 💡 prevents internal overflow
+        className="bg-white/10 backdrop-blur-lg p-6 sm:p-10 rounded-3xl shadow-xl w-full max-w-5xl flex flex-col md:flex-row items-center gap-8 md:gap-12"
+        style={{
+          maxHeight: "90vh",       // Limits height of the box
+          overflow: "hidden",      // Prevents scroll INSIDE this box
+        }}
       >
         {/* Hero Image */}
         <img
           src={heroImage}
-          alt="Hero Visual"
-          className="w-64 h-64 object-cover rounded-xl shadow-lg flex-shrink-0"
+          alt="Hero"
+          className="w-64 h-64 object-cover rounded-xl shadow-lg"
+          style={{ flexShrink: 0 }}
         />
 
-        {/* Text Content */}
-        <div className="flex-1 text-center md:text-left overflow-hidden">
+        {/* Text Section */}
+        <div
+          className="flex-1 text-center md:text-left"
+          style={{
+            overflow: "hidden",      // Prevent internal scrollbars
+            maxHeight: "100%",       // Enforce height limit
+          }}
+        >
           <h1 className="text-4xl sm:text-5xl font-extrabold mb-4 text-white leading-tight break-words">
             Welcome to <span className="text-blue-300">Study Era</span>
           </h1>
