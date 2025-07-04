@@ -30,7 +30,7 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="absolute top-0 bg-white w-full py-4 px-6 left-0 shadow-md flex justify-between items-center">
+    <header className="fixed top-0 left-0 w-full z-50 bg-white shadow-md py-4 px-6 flex justify-between items-center">
       {/* LEFT SIDE */}
       <div className="flex items-center gap-2">
         <img src={userIcon} alt="user icon" className="w-8 h-8" />
