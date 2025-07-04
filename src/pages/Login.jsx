@@ -61,9 +61,13 @@ const Login = () => {
                 className="w-full px-4 py-3 border border-black rounded-md focus:outline-none"
               />
             </div>
-            <Link to={"/password/forgot"} className="font-semibold rounded-md text-black mb-12 block">
+            {/* <Link to={"/password/forgot"} className="font-semibold rounded-md text-black mb-12 block">
               Forgot Password?
+            </Link> */}
+            <Link to={"/forgot-password"} className="font-semibold rounded-md text-black mb-12 block">
+              Forgot Password? 
             </Link>
+
             <div className="block md:hidden font-semibold mt-5">
               <p className="text-gray-800 mb-12">
                 New to our Platform?{" "}
