@@ -81,7 +81,7 @@ const LandingPage = () => {
         {/* Right: Text */}
         <div className="w-full md:w-1/2 text-center md:text-left px-4 md:px-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-white leading-tight mb-4">
-            Welcome to <span className="text-blue-300">Study Era</span>
+            Welcome to <span className="text-blue-300">      Study Era</span>
           </h1>
           <p className="text-sm sm:text-base text-gray-200 mb-6">
             Smart library management system Application for Rural Students.
