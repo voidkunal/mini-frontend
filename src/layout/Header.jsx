@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
-import settingIcon from "../assets/setting.png";
-import userIcon from "../assets/user.png";
+// src/components/Header.jsx
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSettingPopup } from "../store/slice/popupSlice";
+import settingIcon from "../assets/setting.png";
+import userIcon from "../assets/user.png";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -17,43 +18,51 @@ const Header = () => {
       const hours = now.getHours() % 12 || 12;
       const minutes = now.getMinutes().toString().padStart(2, "0");
       const ampm = now.getHours() >= 12 ? "PM" : "AM";
-      setCurrentTime(`${hours}:${minutes} ${ampm}`);
+      const formattedTime = `${hours}:${minutes} ${ampm}`;
+      const formattedDate = now.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
 
-      const options = { month: "short", day: "numeric", year: "numeric" };
-      setCurrentDate(now.toLocaleDateString("en-US", options));
+      setCurrentTime(formattedTime);
+      setCurrentDate(formattedDate);
     };
 
     updateDateTime();
-    const intervalId = setInterval(updateDateTime, 1000);
-    return () => clearInterval(intervalId);
+    const interval = setInterval(updateDateTime, 1000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md py-3 px-4 md:px-6 flex flex-col md:flex-row justify-between items-center gap-2 md:gap-0">
-      {/* LEFT SECTION */}
-      <div className="flex items-center gap-2">
-        <img src={userIcon} alt="user icon" className="w-8 h-8" />
-        <div className="flex flex-col leading-tight">
-          <span className="text-sm md:text-lg font-semibold capitalize">
-            {user?.name || "Guest"}
+    <header className="w-full bg-white shadow-md px-4 py-3 flex items-center justify-between sticky top-0 z-20">
+      {/* Left Side: User Info */}
+      <div className="flex items-center gap-3">
+        <img src={userIcon} alt="User" className="w-10 h-10" />
+        <div className="flex flex-col">
+          <span className="text-sm font-semibold sm:text-base">
+            {user?.name || "Admin"}
           </span>
-          <span className="text-xs md:text-sm text-gray-600">{user?.role || "User"}</span>
+          <span className="text-xs text-gray-600 capitalize">
+            {user?.role || "admin"}
+          </span>
         </div>
       </div>
 
-      {/* RIGHT SECTION */}
-      <div className="flex items-center gap-3">
-        <div className="text-right text-xs md:text-sm font-medium">
-          <div>{currentTime}</div>
-          <div>{currentDate}</div>
+      {/* Right Side: Time + Date + Settings */}
+      <div className="hidden sm:flex items-center gap-4">
+        <div className="flex flex-col text-right text-sm font-semibold">
+          <span>{currentTime}</span>
+          <span>{currentDate}</span>
         </div>
-        <span className="h-10 w-[1px] bg-yellow-400 hidden md:block" />
-        <img
-          src={settingIcon}
-          alt="settings"
-          className="w-6 h-6 md:w-7 md:h-7 cursor-pointer"
-          onClick={() => dispatch(toggleSettingPopup())}
-        />
+        <span className="h-10 w-[2px] bg-yellow-300" />
+        <button onClick={() => dispatch(toggleSettingPopup())}>
+          <img
+            src={settingIcon}
+            alt="Settings"
+            className="w-8 h-8 cursor-pointer"
+          />
+        </button>
       </div>
     </header>
   );
