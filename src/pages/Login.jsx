@@ -139,44 +139,42 @@ const Login = () => {
 
   return (
     <div className="flex flex-col md:flex-row h-screen overflow-hidden">
-      {/* Left Side - Form */}
-      <div className="w-full md:w-1/2 flex items-center justify-center bg-white p-8">
-        <div className="max-w-sm w-full">
-          <div className="flex flex-col items-center mb-12">
+      {/* Left Side - Login Form */}
+      <div className="w-full md:w-1/2 flex items-center justify-center bg-white p-8 overflow-hidden">
+        <div className="max-w-sm w-full overflow-hidden">
+          <div className="flex flex-col items-center mb-8">
             <div className="rounded-full flex items-center justify-center mb-4">
               <img src={logo} alt="logo" className="h-24 w-auto" />
             </div>
-            <h1 className="text-4xl font-medium text-center mb-4">Welcome Back !!</h1>
+            <h1 className="text-4xl font-medium text-center mb-2">Welcome Back !!</h1>
             <p className="text-gray-800 text-center mb-4">
               Please enter your credentials to log in
             </p>
           </div>
 
-          <form onSubmit={handleLogin}>
-            <div className="mb-4 space-y-4">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email"
-                className="w-full px-4 py-3 border border-black rounded-md focus:outline-none"
-              />
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-                className="w-full px-4 py-3 border border-black rounded-md focus:outline-none"
-              />
-            </div>
+          <form onSubmit={handleLogin} className="space-y-4">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              className="w-full px-4 py-3 border border-black rounded-md focus:outline-none"
+            />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              className="w-full px-4 py-3 border border-black rounded-md focus:outline-none"
+            />
 
-            <Link to={"/forgot-password"} className="font-semibold text-black mb-12 block mt-2">
+            <Link to={"/forgot-password"} className="font-semibold text-black block">
               Forgot Password?
             </Link>
 
-            {/* Only show on small screens */}
-            <div className="block md:hidden font-semibold mt-5">
-              <p className="text-gray-800 mb-12">
+            {/* Shown only on small screens */}
+            <div className="block md:hidden font-semibold">
+              <p className="text-gray-800">
                 New to our Platform?{" "}
                 <Link to={"/register"} className="text-sm text-gray-800 hover:underline">
                   Sign Up
@@ -186,7 +184,7 @@ const Login = () => {
 
             <button
               type="submit"
-              className="mt-5 w-full font-semibold bg-blue-400 text-white py-2 rounded-lg hover:bg-white hover:text-blue-400 border-2 border-black transition"
+              className="w-full font-semibold bg-blue-400 text-white py-2 rounded-lg hover:bg-white hover:text-blue-400 border-2 border-black transition"
             >
               SIGN IN
             </button>
@@ -194,13 +192,13 @@ const Login = () => {
         </div>
       </div>
 
-      {/* Right Side - Info/Signup */}
+      {/* Right Side - Info + Signup */}
       <div className="hidden md:flex w-1/2 bg-blue-400 text-white flex-col items-center justify-center p-8 rounded-tl-[80px] rounded-bl-[80px] overflow-hidden">
         <div className="text-center flex flex-col justify-center items-center">
-          <div className="flex justify-center mb-12">
+          <div className="flex justify-center mb-8">
             <img src={logo_with_title} alt="logo_with_title" className="h-44 w-auto" />
           </div>
-          <p className="text-gray-800 mb-12">New to our Platform? Sign up now.</p>
+          <p className="text-gray-800 mb-8">New to our Platform? Sign up now.</p>
           <Link
             to={"/register"}
             className="border-2 mt-5 border-white w-full max-w-xs text-center font-semibold bg-blue-400 text-white px-8 py-2 rounded-lg hover:bg-white hover:text-blue-400 transition"
