@@ -235,9 +235,10 @@ const BookManagement = () => {
   return (
     <>
       <Header />
-      <main className="ml-64 pt-24 px-6 pb-8">
-        <header className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
-          <h2 className="text-xl font-semibold">
+
+      <main className="ml-64 pt-24 px-4 sm:px-6 lg:px-8 min-h-screen bg-gray-50">
+        <header className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
+          <h2 className="text-2xl font-semibold text-gray-800">
             {user?.role === "Admin" ? "Book Management" : "Books"}
           </h2>
 
@@ -245,7 +246,7 @@ const BookManagement = () => {
             {isAuthenticated && user?.role === "Admin" && (
               <button
                 onClick={() => dispatch(toggleAddBookPopup())}
-                className="flex items-center justify-center gap-2 px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-gray-800 transition w-full sm:w-auto"
+                className="flex items-center justify-center gap-2 px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition w-full sm:w-auto"
               >
                 <span className="bg-white text-black w-[25px] h-[25px] text-lg flex items-center justify-center rounded-full">+</span>
                 Add Book
@@ -254,7 +255,7 @@ const BookManagement = () => {
             <input
               type="text"
               placeholder="Search books..."
-              className="border border-gray-300 rounded-md px-3 py-2 w-full sm:w-60"
+              className="border border-gray-300 rounded-md px-3 py-2 w-full sm:w-64"
               value={searchedKeyword}
               onChange={handleSearch}
             />
@@ -265,34 +266,34 @@ const BookManagement = () => {
           <p className="text-lg text-gray-600 mt-10">Loading...</p>
         ) : books?.length > 0 ? (
           <div className="overflow-auto rounded-md shadow bg-white">
-            <table className="min-w-full border-collapse">
-              <thead className="bg-gray-200 text-sm sm:text-base">
+            <table className="min-w-full border-collapse text-sm md:text-base">
+              <thead className="bg-gray-200">
                 <tr>
-                  <th className="px-4 py-2 text-left">#</th>
-                  <th className="px-4 py-2 text-left">Title</th>
-                  <th className="px-4 py-2 text-left">Author</th>
+                  <th className="px-4 py-3 text-left">#</th>
+                  <th className="px-4 py-3 text-left">Title</th>
+                  <th className="px-4 py-3 text-left">Author</th>
                   {user?.role === "Admin" && (
-                    <th className="px-4 py-2 text-left">Qty</th>
+                    <th className="px-4 py-3 text-left">Qty</th>
                   )}
-                  <th className="px-4 py-2 text-left">Price</th>
-                  <th className="px-4 py-2 text-left">Availability</th>
-                  <th className="px-4 py-2 text-center">Actions</th>
+                  <th className="px-4 py-3 text-left">Price</th>
+                  <th className="px-4 py-3 text-left">Availability</th>
+                  <th className="px-4 py-3 text-center">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {searchedBooks.map((book, idx) => (
                   <tr key={book._id} className={idx % 2 === 0 ? "bg-gray-50" : ""}>
-                    <td className="px-4 py-2">{idx + 1}</td>
-                    <td className="px-4 py-2">{book.title}</td>
-                    <td className="px-4 py-2">{book.author}</td>
+                    <td className="px-4 py-3">{idx + 1}</td>
+                    <td className="px-4 py-3">{book.title}</td>
+                    <td className="px-4 py-3">{book.author}</td>
                     {user?.role === "Admin" && (
-                      <td className="px-4 py-2">{book.quantity}</td>
+                      <td className="px-4 py-3">{book.quantity}</td>
                     )}
-                    <td className="px-4 py-2">₹{book.price}</td>
-                    <td className="px-4 py-2">
+                    <td className="px-4 py-3">₹{book.price}</td>
+                    <td className="px-4 py-3">
                       {book.availability ? "Available" : "Unavailable"}
                     </td>
-                    <td className="px-4 py-2">
+                    <td className="px-4 py-3">
                       <div className="flex justify-center gap-3">
                         <BookA
                           onClick={() => openReadPopup(book._id)}
