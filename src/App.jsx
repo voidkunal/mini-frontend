@@ -36,15 +36,21 @@ const App = () => {
   //     .finally(() => setInitializing(false));
   // }, [dispatch]);
 
-  useEffect(() => {
-  if (!isAuthenticated) {
-    dispatch(getUser())
-      .catch((error) => console.error("getUser failed:", error))
-      .finally(() => setInitializing(false));
-  } else {
-    setInitializing(false);
-  }
-}, [dispatch, isAuthenticated]);
+useEffect(() => {
+  const checkAuthCookie = () => {
+    const hasToken = document.cookie.includes("token=");
+    if (hasToken) {
+      dispatch(getUser())
+        .catch((error) => console.error("getUser failed:", error))
+        .finally(() => setInitializing(false));
+    } else {
+      setInitializing(false); // Don't call if no token
+    }
+  };
+
+  checkAuthCookie();
+}, [dispatch]);
+
 
 
   useEffect(() => {

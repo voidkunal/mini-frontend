@@ -214,10 +214,36 @@ export const logout = () => async (dispatch) => {
   }
 };
 
+// export const getUser = () => async (dispatch) => {
+//   try {
+//     dispatch(getUserRequest());
+//     const { data } = await axiosInstance.get(`/auth/me`);
+//     dispatch(getUserSuccess({ user: data.user }));
+//   } catch (err) {
+//     const status = err?.response?.status;
+//     const message = err?.response?.data?.message;
+
+//     if (status === 400 && message === "User is not authenticated") {
+//       dispatch(getUserFailed(null));
+//       return;
+//     }
+
+//     dispatch(getUserFailed(message || "Failed to fetch user"));
+//   }
+// };
+
 export const getUser = () => async (dispatch) => {
+  // ✅ Skip the API call if there's no token cookie
+  if (!document.cookie.includes("token=")) {
+    dispatch(getUserFailed(null)); // No user = not authenticated
+    return;
+  }
+
   try {
     dispatch(getUserRequest());
+
     const { data } = await axiosInstance.get(`/auth/me`);
+
     dispatch(getUserSuccess({ user: data.user }));
   } catch (err) {
     const status = err?.response?.status;
@@ -231,6 +257,7 @@ export const getUser = () => async (dispatch) => {
     dispatch(getUserFailed(message || "Failed to fetch user"));
   }
 };
+
 
 export const forgotPassword = (email) => async (dispatch) => {
   try {
