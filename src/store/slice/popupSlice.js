@@ -1,4 +1,3 @@
-// src/store/slice/popupSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {

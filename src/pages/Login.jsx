@@ -15,7 +15,6 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    // ✅ Send plain JSON instead of FormData
     dispatch(login({ email, password }));
   };
 
@@ -26,14 +25,12 @@ const Login = () => {
     }
   }, [error, dispatch]);
 
-  // ✅ Redirect to homepage after login, only after loading is done
   if (!loading && isAuthenticated) {
     return <Navigate to="/" replace />;
   }
 
   return (
     <div className="flex flex-col md:flex-row h-screen">
-      {/* LEFT SIDE */}
       <div className="w-full md:w-1/2 flex items-center justify-center bg-white p-8 relative">
         <div className="max-w-sm w-full">
           <div className="flex flex-col items-center mb-12">
@@ -77,16 +74,14 @@ const Login = () => {
             </div>
             <button
               type="submit"
-              className="border-2 mt-5 border-black w-full font-semibold bg-yellow-500 text-white py-2 rounded-lg hover:bg-white hover:text-yellow-300 transition"
+              className="border-2 mt-5 border-black w-full font-semibold bg-blue-400 text-white py-2 rounded-lg hover:bg-white hover:text-blue-300 transition"
             >
               SIGN IN
             </button>
           </form>
         </div>
       </div>
-
-      {/* RIGHT SIDE */}
-      <div className="hidden md:flex w-1/2 bg-yellow-500 text-white flex-col items-center justify-center p-8 rounded-tl-[80px] rounded-bl-[80px]">
+      <div className="hidden md:flex w-1/2 bg-blue-400 text-white flex-col items-center justify-center p-8 rounded-tl-[80px] rounded-bl-[80px]">
         <div className="text-center h-[400px] flex flex-col justify-center">
           <div className="flex justify-center mb-12">
             <img src={logo_with_title} alt="logo_with_title" className="mb-12 h-44 w-auto" />
@@ -94,7 +89,7 @@ const Login = () => {
           <p className="text-gray-800 mb-12">New to our Platform? Sign up now.</p>
           <Link
             to={"/register"}
-            className="border-2 mt-5 border-white w-full font-semibold bg-yellow-500 text-white px-8 py-2 rounded-lg hover:bg-white hover:text-yellow-300 transition"
+            className="border-2 mt-5 border-white w-full font-semibold bg-blue-400 text-white px-8 py-2 rounded-lg hover:bg-white hover:text-blue-300 transition"
           >
             SIGN UP
           </Link>

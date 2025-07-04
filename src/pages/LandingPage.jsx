@@ -7,7 +7,7 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-700 via-purple-700 to-blue-700 flex items-center justify-center px-6 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-700 via-purple-700 to-yellow-400 flex items-center justify-center px-6 text-white">
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -24,7 +24,7 @@ const LandingPage = () => {
         {/* Content */}
         <div className="flex-1">
           <h1 className="text-5xl font-extrabold mb-4 text-white drop-shadow-sm">
-            Welcome to <span className="text-yellow-300">Void Tech World</span>
+            Welcome to <span className="text-blue-300">Void Tech World</span>
           </h1>
           <p className="text-lg mb-8 text-gray-200">
             Your smart library management system base Application for Students.
@@ -33,7 +33,7 @@ const LandingPage = () => {
           <div className="flex flex-col sm:flex-row justify-center gap-5">
             <button
               onClick={() => navigate("/login")}
-              className="bg-yellow-400 hover:bg-yellow-300 text-black font-semibold px-8 py-3 rounded-full transition-all duration-300 shadow-md"
+              className="bg-blue-400 hover:bg-blue-300 text-black font-semibold px-8 py-3 rounded-full transition-all duration-300 shadow-md"
             >
               Get Started
             </button>

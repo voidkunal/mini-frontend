@@ -1,4 +1,3 @@
-// src/store/store.js
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./slice/authSlice";
 import popupReducer from "./slice/popupSlice";

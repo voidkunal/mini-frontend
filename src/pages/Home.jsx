@@ -22,8 +22,8 @@ const Home = () => {
 
   return (
     <div className="relative md:pl-64 flex min-h-screen bg-gray-100">
-      {/* Hamburger for small screens */}
-      <div className="md:hidden z-10 absolute right-6 top-4 sm:top-6 flex justify-center items-center bg-pink-400 rounded-md h-9 w-9 text-white">
+  
+      <div className="md:hidden z-10 absolute right-6 top-4 sm:top-6 flex justify-center items-center bg-yellow-400 rounded-md h-9 w-9 text-white">
         <GiHamburgerMenu
           className="text-2xl"
           onClick={() => setIsSideBarOpen(!isSideBarOpen)}
@@ -36,7 +36,7 @@ const Home = () => {
         setSelectedComponent={setSelectedComponent}
       />
 
-      {/* Component Renderer */}
+  
       {
         (() => {
           switch (selectedComponent) {

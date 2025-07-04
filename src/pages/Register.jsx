@@ -45,8 +45,8 @@ const Register = () => {
 
   return (
     <div className="flex flex-col justify-center md:flex-row h-screen">
-      {/* LEFT SIDE */}
-      <div className="hidden w-full md:w-1/2 bg-yellow-500 text-white md:flex flex-col items-center justify-center p-8 rounded-tr-[80px] rounded-br-[80px]">
+      
+      <div className="hidden w-full md:w-1/2 bg-blue-400 text-white md:flex flex-col items-center justify-center p-8 rounded-tr-[80px] rounded-br-[80px]">
         <div className="text-center h-[376px]">
           <div className="flex justify-center mb-12">
             <img
@@ -58,14 +58,13 @@ const Register = () => {
           <p className="text-gray-300 mb-12">Already have an account? Sign in now.</p>
           <Link
             to="/login"
-            className="border-2 rounded-lg font-semibold border-white py-2 px-8 hover:bg-white hover:text-yellow-300 transition"
+            className="border-2 rounded-lg font-semibold border-white py-2 px-8 hover:bg-white hover:text-blue-300 transition"
           >
             SIGN IN
           </Link>
         </div>
       </div>
 
-      {/* RIGHT SIDE */}
       <div className="w-full md:w-1/2 flex items-center justify-center bg-white p-8">
         <div className="w-full max-w-sm">
           <div className="flex justify-center mb-12">
@@ -110,7 +109,7 @@ const Register = () => {
               />
             </div>
 
-            {/* Mobile alternate CTA */}
+           
             <div className="block md:hidden font-semibold mt-5">
               <p>
                 Already have an account?{" "}
@@ -123,7 +122,7 @@ const Register = () => {
             <button
               type="submit"
               disabled={loading}
-              className="border-2 mt-5 border-black w-full font-semibold bg-yellow-500 text-white py-2 rounded-lg hover:bg-white hover:text-yellow-300 transition"
+              className="border-2 mt-5 border-black w-full font-semibold bg-blue-400 text-white py-2 rounded-lg hover:bg-white hover:text-blue-300 transition"
             >
               {loading ? "Registering..." : "SIGN UP"}
             </button>

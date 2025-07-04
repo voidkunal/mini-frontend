@@ -1,4 +1,3 @@
-// src/redux/slices/userSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import axiosInstance from "../../utils/axiosConfig";
@@ -52,7 +51,6 @@ export const {
 
 export default userSlice.reducer;
 
-// ------------------- Thunks -------------------
 
 export const fetchAllUsers = () => async (dispatch) => {
   dispatch(fetchAllUsersRequest());

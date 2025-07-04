@@ -44,7 +44,7 @@ useEffect(() => {
         .catch((error) => console.error("getUser failed:", error))
         .finally(() => setInitializing(false));
     } else {
-      setInitializing(false); // Don't call if no token
+      setInitializing(false); 
     }
   };
 

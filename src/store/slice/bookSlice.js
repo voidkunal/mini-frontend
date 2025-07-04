@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axiosInstance from "../../utils/axiosConfig"; // uses VITE_BACKEND_URL and Bearer token
-
+import axiosInstance from "../../utils/axiosConfig"; 
 const bookSlice = createSlice({
   name: "book",
   initialState: {
@@ -56,8 +55,6 @@ export const {
 } = bookSlice.actions;
 
 export default bookSlice.reducer;
-
-// -------------------- Thunks --------------------
 
 export const fetchAllBooks = () => async (dispatch) => {
   dispatch(fetchBooksRequest());

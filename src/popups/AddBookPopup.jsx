@@ -47,7 +47,7 @@ const AddBookPopup = () => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center px-4 sm:px-0">
       <div className="bg-white w-full max-w-lg p-6 sm:p-8 rounded-xl shadow-lg relative">
-        {/* Close Button */}
+        
         <button
           className="absolute top-4 right-4 text-gray-600 text-xl hover:text-red-500"
           onClick={handleClose}
@@ -55,12 +55,12 @@ const AddBookPopup = () => {
           &times;
         </button>
 
-        {/* Title */}
+       
         <h2 className="text-2xl font-semibold text-center mb-6">Add New Book</h2>
 
-        {/* Form */}
+        
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Title */}
+          
           <div>
             <label className="block text-sm font-medium mb-1">Title</label>
             <input
@@ -68,11 +68,11 @@ const AddBookPopup = () => {
               value={bookData.title}
               onChange={(e) => setBookData({ ...bookData, title: e.target.value })}
               required
-              className="w-full p-2 border rounded-md focus:outline-yellow-400"
+              className="w-full p-2 border rounded-md focus:outline-blue-400"
             />
           </div>
 
-          {/* Author */}
+          
           <div>
             <label className="block text-sm font-medium mb-1">Author</label>
             <input
@@ -80,11 +80,11 @@ const AddBookPopup = () => {
               value={bookData.author}
               onChange={(e) => setBookData({ ...bookData, author: e.target.value })}
               required
-              className="w-full p-2 border rounded-md focus:outline-yellow-400"
+              className="w-full p-2 border rounded-md focus:outline-blue-400"
             />
           </div>
 
-          {/* Description */}
+          
           <div>
             <label className="block text-sm font-medium mb-1">Description</label>
             <textarea
@@ -92,11 +92,11 @@ const AddBookPopup = () => {
               value={bookData.description}
               onChange={(e) => setBookData({ ...bookData, description: e.target.value })}
               required
-              className="w-full p-2 border rounded-md focus:outline-yellow-400 resize-none"
+              className="w-full p-2 border rounded-md focus:outline-blue-400 resize-none"
             />
           </div>
 
-          {/* Quantity and Price (side by side on larger screens) */}
+          
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <label className="block text-sm font-medium mb-1">Quantity</label>
@@ -106,7 +106,7 @@ const AddBookPopup = () => {
                 value={bookData.quantity}
                 onChange={(e) => setBookData({ ...bookData, quantity: e.target.value })}
                 required
-                className="w-full p-2 border rounded-md focus:outline-yellow-400"
+                className="w-full p-2 border rounded-md focus:outline-blue-400"
               />
             </div>
 
@@ -119,7 +119,7 @@ const AddBookPopup = () => {
                 value={bookData.price}
                 onChange={(e) => setBookData({ ...bookData, price: e.target.value })}
                 required
-                className="w-full p-2 border rounded-md focus:outline-yellow-400"
+                className="w-full p-2 border rounded-md focus:outline-blue-400"
               />
             </div>
           </div>
@@ -131,7 +131,7 @@ const AddBookPopup = () => {
               type="file"
               accept=".pdf,.jpg,.jpeg,.png"
               onChange={(e) => setBookData({ ...bookData, file: e.target.files[0] })}
-              className="w-full p-2 border rounded-md focus:outline-yellow-400"
+              className="w-full p-2 border rounded-md focus:outline-blue-400"
             />
             {bookData.file && (
               <p className="text-sm text-gray-600 mt-1">Selected: {bookData.file.name}</p>
@@ -150,7 +150,7 @@ const AddBookPopup = () => {
             <button
               type="submit"
               disabled={loading}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 transition"
+              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50 transition"
             >
               {loading ? "Uploading..." : "Add Book"}
             </button>

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import axiosInstance from '../../utils/axiosConfig'; // ✅ Centralized config
+import axiosInstance from '../../utils/axiosConfig'; 
 
 const borrowSlice = createSlice({
   name: 'borrow',
@@ -73,7 +73,7 @@ const borrowSlice = createSlice({
   },
 });
 
-// ✅ Actions
+
 export const {
   fetchUsersBorrowedBooksRequest,
   fetchUsersBorrowedBooksSuccess,
@@ -90,7 +90,7 @@ export const {
   resetBorrowSlice: resetBorrowSliceAction,
 } = borrowSlice.actions;
 
-// ✅ Thunks
+
 export const fetchUsersBorrowedBooks = () => async (dispatch) => {
   dispatch(fetchUsersBorrowedBooksRequest());
   try {

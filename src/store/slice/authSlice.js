@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axiosInstance from "../../utils/axiosConfig"; // ✅ Axios using VITE_BACKEND_URL
+import axiosInstance from "../../utils/axiosConfig"; 
 
 const initialState = {
   loading: false,
@@ -106,7 +106,6 @@ export const {
 
 export default authSlice.reducer;
 
-// -------------------- Thunks --------------------
 
 export const register = (data) => async (dispatch) => {
   try {

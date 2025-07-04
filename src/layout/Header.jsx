@@ -12,13 +12,10 @@ const Header = () => {
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-20 bg-white shadow px-4 py-3 flex flex-col sm:flex-row items-center justify-between sm:pl-64 gap-2">
-        {/* Logo and App Name */}
         <div className="flex items-center gap-2 text-xl font-semibold whitespace-nowrap">
-          <span role="img" aria-label="books"> </span>
+          <span role="img" aria-label="books">📚</span>
           <span>Study Era</span>
         </div>
-
-        {/* Time, Date, and Settings */}
         <div className="flex items-center gap-4 text-sm text-gray-700 whitespace-nowrap">
           <span>
             {new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
@@ -29,14 +26,12 @@ const Header = () => {
           </span>
           {isAuthenticated && (
             <Settings
-              className="w-5 h-5 cursor-pointer hover:text-gray-900"
+              className="w-5 h-5 cursor-pointer hover:text-gray-700"
               onClick={() => dispatch(toggleSettingPopup())}
             />
           )}
         </div>
       </header>
-
-      {/* Conditionally Render SettingPopup */}
       {settingPopup && <SettingPopup />}
     </>
   );

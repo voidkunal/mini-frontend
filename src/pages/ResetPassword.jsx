@@ -45,8 +45,8 @@ const ResetPassword = () => {
 
   return (
     <div className="flex flex-col md:flex-row h-screen">
-      {/* LEFT SECTION */}
-      <div className="hidden md:flex w-full md:w-1/2 bg-yellow-500 text-white flex-col items-center justify-center p-8 rounded-tr-[80px] rounded-br-[80px]">
+      
+      <div className="hidden md:flex w-full md:w-1/2 bg-blue-400 text-white flex-col items-center justify-center p-8 rounded-tr-[80px] rounded-br-[80px]">
         <div className="text-center h-[450px]">
           <div className="flex justify-center mb-12">
             <img
@@ -61,11 +61,11 @@ const ResetPassword = () => {
         </div>
       </div>
 
-      {/* RIGHT SECTION */}
+      
       <div className="w-full md:w-1/2 flex items-center justify-center bg-white p-8 relative">
         <Link
           to={"/password/forgot"}
-          className="border-2 border-black rounded-3xl font-bold w-52 py-2 px-4 fixed top-10 -left-28 hover:bg-yellow-500 hover:text-white transition duration-300 text-end"
+          className="border-2 border-black rounded-3xl font-bold w-52 py-2 px-4 fixed top-10 -left-28 hover:bg-blue-400 hover:text-white transition duration-300 text-end"
         >
           Back
         </Link>
@@ -102,7 +102,7 @@ const ResetPassword = () => {
             </div>
             <button
               type="submit"
-              className="border-2 mt-5 border-black w-full font-semibold bg-yellow-500 text-white py-2 rounded-lg hover:bg-white hover:text-yellow-300 transition"
+              className="border-2 mt-5 border-black w-full font-semibold bg-blue-400 text-white py-2 rounded-lg hover:bg-white hover:text-blue-300 transition"
               disabled={loading}
             >
               {loading ? "Resetting..." : "RESET PASSWORD"}
