@@ -14,7 +14,6 @@ const Header = () => {
   useEffect(() => {
     const updateDateTime = () => {
       const now = new Date();
-
       const hours = now.getHours() % 12 || 12;
       const minutes = now.getMinutes().toString().padStart(2, "0");
       const ampm = now.getHours() >= 12 ? "PM" : "AM";
@@ -30,31 +29,29 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-white shadow-md py-4 px-6 flex justify-between items-center">
-      {/* LEFT SIDE */}
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md py-3 px-4 md:px-6 flex flex-col md:flex-row justify-between items-center gap-2 md:gap-0">
+      {/* LEFT SECTION */}
       <div className="flex items-center gap-2">
         <img src={userIcon} alt="user icon" className="w-8 h-8" />
-        <div className="flex flex-col">
-          <span className="text-sm font-medium sm:text-lg lg:text-xl sm:font-semibold">
+        <div className="flex flex-col leading-tight">
+          <span className="text-sm md:text-lg font-semibold capitalize">
             {user?.name || "Guest"}
           </span>
-          <span className="text-sm font-medium sm:text-lg sm:font-medium">
-            {user?.role || "User"}
-          </span>
+          <span className="text-xs md:text-sm text-gray-600">{user?.role || "User"}</span>
         </div>
       </div>
 
-      {/* RIGHT SIDE */}
-      <div className="hidden md:flex items-center gap-2">
-        <div className="flex flex-col text-sm lg:text-base items-end font-semibold">
-          <span>{currentTime}</span>
-          <span>{currentDate}</span>
+      {/* RIGHT SECTION */}
+      <div className="flex items-center gap-3">
+        <div className="text-right text-xs md:text-sm font-medium">
+          <div>{currentTime}</div>
+          <div>{currentDate}</div>
         </div>
-        <span className="bg-yellow-300 h-14 w-[2px]" />
+        <span className="h-10 w-[1px] bg-yellow-400 hidden md:block" />
         <img
           src={settingIcon}
           alt="settings"
-          className="w-8 h-8 cursor-pointer"
+          className="w-6 h-6 md:w-7 md:h-7 cursor-pointer"
           onClick={() => dispatch(toggleSettingPopup())}
         />
       </div>
