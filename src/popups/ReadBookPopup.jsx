@@ -1,3 +1,7 @@
+import React from "react";
+import { useDispatch } from "react-redux";
+import { closePopup } from "../store/slice/popupSlice";
+
 const ReadBookPopup = ({ book }) => {
   const dispatch = useDispatch();
   const handleClose = () => dispatch(closePopup("readBookPopup"));
@@ -16,7 +20,9 @@ const ReadBookPopup = ({ book }) => {
         </button>
 
         <h2 className="text-xl font-semibold mb-1">{book?.title}</h2>
-        <p className="text-gray-600 mb-3"><strong>Author:</strong> {book?.author}</p>
+        <p className="text-gray-600 mb-3">
+          <strong>Author:</strong> {book?.author}
+        </p>
 
         {book?.fileData ? (
           isPDF ? (
@@ -39,3 +45,5 @@ const ReadBookPopup = ({ book }) => {
     </div>
   );
 };
+
+export default ReadBookPopup;
