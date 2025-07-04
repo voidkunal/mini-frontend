@@ -67,7 +67,7 @@ const LandingPage = () => {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="bg-white/10 backdrop-blur-lg p-6 sm:p-10 rounded-3xl shadow-xl text-center max-w-5xl w-full flex flex-col md:flex-row items-center gap-8 md:gap-12 overflow-hidden"
+        className="bg-white/10 backdrop-blur-lg p-6 sm:p-10 rounded-3xl shadow-xl text-center w-full max-w-5xl flex flex-col md:flex-row items-center gap-8 md:gap-12 overflow-hidden" // <-- added overflow-hidden here
       >
         
         <img
@@ -77,7 +77,7 @@ const LandingPage = () => {
         />
 
         
-        <div className="flex-1">
+        <div className="flex-1 overflow-hidden"> 
           <h1 className="text-4xl sm:text-5xl font-extrabold mb-4 text-white leading-tight">
             Welcome to <span className="text-blue-300">Study Era</span>
           </h1>
