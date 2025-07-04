@@ -39,7 +39,7 @@ const UserDashboard = () => {
     labels: ["Read Books", "Remaining"],
     datasets: [
       {
-        data: [readBooksCount, 10 - readBooksCount], // Placeholder for balance
+        data: [readBooksCount, 10 - readBooksCount], 
         backgroundColor: ["#facc15", "#e5e7eb"],
         hoverOffset: 6,
       },
@@ -50,9 +50,9 @@ const UserDashboard = () => {
     <main className="relative flex-1 p-6 pt-28 bg-gray-50 min-h-screen">
       <Header />
 
-      {/* Overview Cards */}
+      
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-10">
-        {/* Read Books */}
+       
         <div className="bg-white p-6 rounded-2xl shadow hover:shadow-md transition">
           <div className="flex items-center gap-4">
             <img src={bookIcon} alt="book" className="w-10 h-10" />
@@ -63,7 +63,7 @@ const UserDashboard = () => {
           </div>
         </div>
 
-        {/* Browse Library */}
+        
         <div className="bg-white p-6 rounded-2xl shadow hover:shadow-md transition">
           <div className="flex items-center gap-4">
             <img src={browseIcon} alt="browse" className="w-10 h-10" />
@@ -75,9 +75,9 @@ const UserDashboard = () => {
         </div>
       </div>
 
-      {/* Chart & Quote */}
+     
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
-        {/* Pie Chart */}
+        
         <div className="bg-white rounded-2xl shadow p-6 flex flex-col items-center justify-center">
           <h2 className="text-xl font-semibold mb-4">Reading Summary</h2>
           <div className="w-full max-w-sm">
@@ -95,7 +95,7 @@ const UserDashboard = () => {
           </div>
         </div>
 
-        {/* Quote */}
+     
         <div className="bg-white rounded-2xl shadow p-8 flex flex-col justify-between">
           <blockquote className="text-xl xl:text-2xl font-medium text-gray-800 leading-relaxed mb-4">
             “A reader lives a thousand lives before he dies... The man who never reads lives only one.”
