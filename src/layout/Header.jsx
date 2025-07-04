@@ -1,13 +1,11 @@
 // src/components/Header.jsx
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { toggleSettingPopup } from "../store/slice/popupSlice";
 import settingIcon from "../assets/setting.png";
-import userIcon from "../assets/user.png";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
 
   const [currentTime, setCurrentTime] = useState("");
   const [currentDate, setCurrentDate] = useState("");
@@ -35,27 +33,14 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="w-full bg-white shadow-md px-4 py-3 flex items-center justify-between sticky top-0 z-20">
-      {/* Left Side: User Info */}
-      <div className="flex items-center gap-3">
-        <img src={userIcon} alt="User" className="w-10 h-10" />
-        <div className="flex flex-col">
-          <span className="text-sm font-semibold sm:text-base">
-            {user?.name || "Admin"}
-          </span>
-          <span className="text-xs text-gray-600 capitalize">
-            {user?.role || "admin"}
-          </span>
-        </div>
-      </div>
-
+    <header className="w-full bg-white shadow-md px-4 py-3 flex items-center justify-end sticky top-0 z-20">
       {/* Right Side: Time + Date + Settings */}
-      <div className="hidden sm:flex items-center gap-4">
-        <div className="flex flex-col text-right text-sm font-semibold">
-          <span>{currentTime}</span>
-          <span>{currentDate}</span>
+      <div className="flex items-center gap-4">
+        <div className="text-right text-sm font-semibold hidden sm:block">
+          <div>{currentTime}</div>
+          <div>{currentDate}</div>
         </div>
-        <span className="h-10 w-[2px] bg-yellow-300" />
+        <span className="h-10 w-[2px] bg-yellow-300 hidden sm:block" />
         <button onClick={() => dispatch(toggleSettingPopup())}>
           <img
             src={settingIcon}
