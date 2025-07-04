@@ -1,55 +1,43 @@
 // src/components/Header.jsx
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { toggleSettingPopup } from "../store/slice/popupSlice";
-import settingIcon from "../assets/setting.png";
+import { FaCog } from "react-icons/fa";
 
 const Header = () => {
-  const dispatch = useDispatch();
-
   const [currentTime, setCurrentTime] = useState("");
   const [currentDate, setCurrentDate] = useState("");
 
   useEffect(() => {
-    const updateDateTime = () => {
+    const updateTime = () => {
       const now = new Date();
-      const hours = now.getHours() % 12 || 12;
-      const minutes = now.getMinutes().toString().padStart(2, "0");
-      const ampm = now.getHours() >= 12 ? "PM" : "AM";
-      const formattedTime = `${hours}:${minutes} ${ampm}`;
-      const formattedDate = now.toLocaleDateString("en-US", {
+      const time = now.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      });
+      const date = now.toLocaleDateString("en-US", {
         month: "short",
-        day: "numeric",
         year: "numeric",
       });
-
-      setCurrentTime(formattedTime);
-      setCurrentDate(formattedDate);
+      setCurrentTime(time);
+      setCurrentDate(date);
     };
 
-    updateDateTime();
-    const interval = setInterval(updateDateTime, 1000);
+    updateTime();
+    const interval = setInterval(updateTime, 60000); // update every 1 minute
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <header className="w-full bg-white shadow-md px-4 py-3 flex items-center justify-end sticky top-0 z-20">
-      {/* Right Side: Time + Date + Settings */}
-      <div className="flex items-center gap-4">
-        <div className="text-right text-sm font-semibold hidden sm:block">
-          <div>{currentTime}</div>
-          <div>{currentDate}</div>
-        </div>
-        <span className="h-10 w-[2px] bg-yellow-300 hidden sm:block" />
-        <button onClick={() => dispatch(toggleSettingPopup())}>
-          <img
-            src={settingIcon}
-            alt="Settings"
-            className="w-8 h-8 cursor-pointer"
-          />
-        </button>
+    <div className="w-full bg-white shadow-sm px-4 py-3 flex justify-between items-center">
+      <h1 className="text-xl font-bold text-gray-800">📚 Void Library</h1>
+
+      <div className="flex items-center gap-4 text-sm sm:text-base text-gray-700">
+        <span>{currentTime}</span>
+        <span className="border-l h-4 border-gray-300"></span>
+        <span>{currentDate}</span>
+        <FaCog className="text-lg sm:text-xl cursor-pointer hover:text-black" />
       </div>
-    </header>
+    </div>
   );
 };
 
