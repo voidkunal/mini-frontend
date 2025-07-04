@@ -152,11 +152,7 @@ export const logout = () => async (dispatch) => {
 };
 
 export const getUser = () => async (dispatch) => {
-  if (!document.cookie.includes("token=")) {
-    dispatch(getUserFailed(null));
-    return;
-  }
-
+  
   try {
     dispatch(getUserRequest());
     const { data } = await axiosInstance.get(`/auth/me`, { withCredentials: true });
