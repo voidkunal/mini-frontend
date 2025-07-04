@@ -1,8 +1,5 @@
-// src/redux/slices/authSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-
-const API = import.meta.env.VITE_API_URL || "https://your-production-api.com/api/v1"; // fallback
+import axiosInstance from "../../utils/axiosConfig"; // ✅ Axios using VITE_BACKEND_URL
 
 const initialState = {
   loading: false,
@@ -109,22 +106,12 @@ export const {
 
 export default authSlice.reducer;
 
-// -------------------- AXIOS with Auth --------------------
-const getAuthHeaders = () => {
-  const token = localStorage.getItem("token");
-  return {
-    headers: {
-      "Content-Type": "application/json",
-      ...(token && { Authorization: `Bearer ${token}` }),
-    },
-  };
-};
-
 // -------------------- Thunks --------------------
+
 export const register = (data) => async (dispatch) => {
   try {
     dispatch(registerRequest());
-    const { data: res } = await axios.post(`${API}/auth/register`, data, getAuthHeaders());
+    const { data: res } = await axiosInstance.post("/auth/register", data);
     dispatch(registerSuccess(res));
   } catch (err) {
     dispatch(registerFailed(err?.response?.data?.message || "Registration failed"));
@@ -134,7 +121,7 @@ export const register = (data) => async (dispatch) => {
 export const otpVerification = (email, otp) => async (dispatch) => {
   try {
     dispatch(otpVerificationRequest());
-    const { data: res } = await axios.post(`${API}/auth/verify-otp`, { email, otp }, getAuthHeaders());
+    const { data: res } = await axiosInstance.post("/auth/verify-otp", { email, otp });
     if (res.token) localStorage.setItem("token", res.token);
     dispatch(otpVerificationSuccess(res));
   } catch (err) {
@@ -145,9 +132,10 @@ export const otpVerification = (email, otp) => async (dispatch) => {
 export const login = (data) => async (dispatch) => {
   try {
     dispatch(loginRequest());
-    const { data: res } = await axios.post(`${API}/auth/login`, data, getAuthHeaders());
+    const { data: res } = await axiosInstance.post("/auth/login", data);
     if (res.token) localStorage.setItem("token", res.token);
     dispatch(loginSuccess(res));
+    dispatch(getUser());
   } catch (err) {
     dispatch(loginFailed(err?.response?.data?.message || "Login failed"));
   }
@@ -156,10 +144,10 @@ export const login = (data) => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   try {
     dispatch(logoutRequest());
-    const { data } = await axios.get(`${API}/auth/logout`, getAuthHeaders());
-    dispatch(logoutSuccess(data.message));
-    dispatch(resetAuthSlice());
+    await axiosInstance.get("/auth/logout");
+    dispatch(logoutSuccess("Logged out successfully."));
     localStorage.removeItem("token");
+    dispatch(resetAuthSlice());
   } catch (err) {
     dispatch(logoutFailed(err?.response?.data?.message || "Logout failed"));
   }
@@ -168,13 +156,13 @@ export const logout = () => async (dispatch) => {
 export const getUser = () => async (dispatch) => {
   try {
     dispatch(getUserRequest());
-    const { data } = await axios.get(`${API}/auth/me`, getAuthHeaders());
+    const { data } = await axiosInstance.get("/auth/me");
     dispatch(getUserSuccess(data));
   } catch (err) {
     const status = err?.response?.status;
     const message = err?.response?.data?.message;
     if (status === 401 || message === "User is not authenticated") {
-      dispatch(getUserFailed(null)); // silent
+      dispatch(getUserFailed(null));
       return;
     }
     dispatch(getUserFailed(message || "Fetching user failed"));
@@ -184,7 +172,7 @@ export const getUser = () => async (dispatch) => {
 export const forgotPassword = (email) => async (dispatch) => {
   try {
     dispatch(forgotPasswordRequest());
-    const { data } = await axios.post(`${API}/auth/password/forgot`, { email }, getAuthHeaders());
+    const { data } = await axiosInstance.post("/auth/password/forgot", { email });
     dispatch(forgotPasswordSuccess({ message: data.message }));
   } catch (err) {
     dispatch(forgotPasswordFailed(err?.response?.data?.message || "Email failed to send"));
@@ -194,7 +182,7 @@ export const forgotPassword = (email) => async (dispatch) => {
 export const resetPassword = (data, token) => async (dispatch) => {
   try {
     dispatch(resetPasswordRequest());
-    const { data: res } = await axios.put(`${API}/auth/password/reset/${token}`, data, getAuthHeaders());
+    const { data: res } = await axiosInstance.put(`/auth/password/reset/${token}`, data);
     dispatch(resetPasswordSuccess(res));
   } catch (err) {
     dispatch(resetPasswordFailed(err?.response?.data?.message || "Reset failed"));
@@ -204,7 +192,7 @@ export const resetPassword = (data, token) => async (dispatch) => {
 export const updatePassword = (data) => async (dispatch) => {
   try {
     dispatch(updatePasswordRequest());
-    const { data: res } = await axios.put(`${API}/auth/password/update`, data, getAuthHeaders());
+    const { data: res } = await axiosInstance.put("/auth/password/update", data);
     dispatch(updatePasswordSuccess(res.message));
   } catch (err) {
     dispatch(updatePasswordFailed(err?.response?.data?.message || "Update failed"));
