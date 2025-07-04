@@ -30,11 +30,22 @@ const App = () => {
   const [selectedComponent, setSelectedComponent] = useState(null);
   const [isSideBarOpen, setIsSideBarOpen] = useState(true);
 
+  // useEffect(() => {
+  //   dispatch(getUser())
+  //     .catch((error) => console.error("getUser failed:", error))
+  //     .finally(() => setInitializing(false));
+  // }, [dispatch]);
+
   useEffect(() => {
+  if (!isAuthenticated) {
     dispatch(getUser())
       .catch((error) => console.error("getUser failed:", error))
       .finally(() => setInitializing(false));
-  }, [dispatch]);
+  } else {
+    setInitializing(false);
+  }
+}, [dispatch, isAuthenticated]);
+
 
   useEffect(() => {
     if (user?.role === "Admin") {
