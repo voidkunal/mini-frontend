@@ -167,7 +167,7 @@ import AddBookPopup from "../../components/popup/BookPopup/AddBookPopup";
 import { toast } from "react-toastify";
 import { FiTrash2 } from "react-icons/fi";
 import { IoEyeOutline } from "react-icons/io5";
-import bookIcon from "../assets/bookIcon"; // ✅ Ensure this image exists
+import bookIcon from "../assets/book.png"; // ✅ Ensure this image exists
 
 const BookManagement = () => {
   const dispatch = useDispatch();
