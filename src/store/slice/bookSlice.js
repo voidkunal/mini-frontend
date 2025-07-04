@@ -1,6 +1,5 @@
-// ✅ Final Fixed bookSlice.js for Vercel Production (Cookies + HTTPS Compatible)
 import { createSlice } from "@reduxjs/toolkit";
-import axiosInstance from "../../utils/axiosConfig"; // uses VITE_BACKEND_URL withCredentials
+import axiosInstance from "../../utils/axiosConfig"; // uses VITE_BACKEND_URL and Bearer token
 
 const bookSlice = createSlice({
   name: "book",
@@ -56,7 +55,10 @@ export const {
   resetBookSlice,
 } = bookSlice.actions;
 
-// ✅ Thunks
+export default bookSlice.reducer;
+
+// -------------------- Thunks --------------------
+
 export const fetchAllBooks = () => async (dispatch) => {
   dispatch(fetchBooksRequest());
   try {
@@ -95,5 +97,3 @@ export const deleteBook = (bookId) => async (dispatch) => {
     return { payload: { success: false, message: errorMsg } };
   }
 };
-
-export default bookSlice.reducer;
