@@ -11,7 +11,7 @@ const ReadBookPopup = ({ book }) => {
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-  // ✅ Build full file URL from saved book.filePath (e.g., "books/filename.pdf")
+  // ✅ Construct correct file URL using filePath from MongoDB
   const fileUrl = book?.filePath ? `${backendUrl}/uploads/${book.filePath}` : null;
 
   return (
@@ -30,6 +30,7 @@ const ReadBookPopup = ({ book }) => {
           <strong>Author:</strong> {book?.author}
         </p>
 
+        {/* Display Book File */}
         {fileUrl ? (
           fileUrl.endsWith(".pdf") ? (
             <iframe
