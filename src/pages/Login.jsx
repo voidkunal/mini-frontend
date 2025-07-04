@@ -138,18 +138,14 @@ const Login = () => {
   }
 
   return (
-    <div className="flex flex-col md:flex-row h-screen overflow-hidden">
-      {/* Left Side - Login Form */}
-      <div className="w-full md:w-1/2 flex items-center justify-center bg-white p-8 overflow-hidden">
-        <div className="max-w-sm w-full overflow-hidden">
-          <div className="flex flex-col items-center mb-8">
-            <div className="rounded-full flex items-center justify-center mb-4">
-              <img src={logo} alt="logo" className="h-24 w-auto" />
-            </div>
-            <h1 className="text-4xl font-medium text-center mb-2">Welcome Back !!</h1>
-            <p className="text-gray-800 text-center mb-4">
-              Please enter your credentials to log in
-            </p>
+    <div className="flex h-screen overflow-hidden">
+      
+      <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-8 bg-white">
+        <div className="w-full max-w-md space-y-6">
+          <div className="flex flex-col items-center">
+            <img src={logo} alt="logo" className="h-20 mb-4" />
+            <h1 className="text-3xl font-semibold text-center">Welcome Back</h1>
+            <p className="text-center text-gray-600">Please enter your credentials to log in</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
@@ -158,54 +154,50 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email"
-              className="w-full px-4 py-3 border border-black rounded-md focus:outline-none"
+              className="w-full px-4 py-3 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
-              className="w-full px-4 py-3 border border-black rounded-md focus:outline-none"
+              className="w-full px-4 py-3 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
-
-            <Link to={"/forgot-password"} className="font-semibold text-black block">
-              Forgot Password?
-            </Link>
-
-            {/* Shown only on small screens */}
-            <div className="block md:hidden font-semibold">
-              <p className="text-gray-800">
-                New to our Platform?{" "}
-                <Link to={"/register"} className="text-sm text-gray-800 hover:underline">
-                  Sign Up
-                </Link>
-              </p>
+            <div className="text-sm text-right">
+              <Link to="/forgot-password" className="text-blue-500 hover:underline">
+                Forgot Password?
+              </Link>
             </div>
-
             <button
               type="submit"
-              className="w-full font-semibold bg-blue-400 text-white py-2 rounded-lg hover:bg-white hover:text-blue-400 border-2 border-black transition"
+              className="w-full bg-blue-500 text-white py-2 rounded-md font-semibold hover:bg-blue-600 transition"
             >
               SIGN IN
             </button>
           </form>
+
+          
+          <div className="md:hidden text-center pt-4">
+            <p className="text-gray-600">
+              New to our Platform?{" "}
+              <Link to="/register" className="text-blue-500 hover:underline">
+                Sign Up
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* Right Side - Info + Signup */}
-      <div className="hidden md:flex w-1/2 bg-blue-400 text-white flex-col items-center justify-center p-8 rounded-tl-[80px] rounded-bl-[80px] overflow-hidden">
-        <div className="text-center flex flex-col justify-center items-center">
-          <div className="flex justify-center mb-8">
-            <img src={logo_with_title} alt="logo_with_title" className="h-44 w-auto" />
-          </div>
-          <p className="text-gray-800 mb-8">New to our Platform? Sign up now.</p>
-          <Link
-            to={"/register"}
-            className="border-2 mt-5 border-white w-full max-w-xs text-center font-semibold bg-blue-400 text-white px-8 py-2 rounded-lg hover:bg-white hover:text-blue-400 transition"
-          >
-            SIGN UP
-          </Link>
-        </div>
+      
+      <div className="hidden md:flex w-1/2 bg-blue-400 text-white flex-col justify-center items-center p-10 rounded-tl-[80px] rounded-bl-[80px]">
+        <img src={logo_with_title} alt="logo_with_title" className="h-44 mb-8" />
+        <p className="text-white text-lg mb-6">New to our Platform? Sign up now.</p>
+        <Link
+          to="/register"
+          className="border-2 border-white text-white px-6 py-2 rounded-md hover:bg-white hover:text-blue-400 transition"
+        >
+          SIGN UP
+        </Link>
       </div>
     </div>
   );
