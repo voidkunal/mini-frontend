@@ -15,10 +15,8 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const data = new FormData();
-    data.append("email", email);
-    data.append("password", password);
-    dispatch(login(data));
+    // ✅ Send plain JSON instead of FormData
+    dispatch(login({ email, password }));
   };
 
   useEffect(() => {
