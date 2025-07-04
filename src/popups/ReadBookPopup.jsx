@@ -11,22 +11,13 @@ const ReadBookPopup = ({ book }) => {
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-  // const fileUrl = book?.bookFile
-  //   ? `${backendUrl}/uploads/${book.bookFile}`
-  //   : book?.filePath
-  //   ? `${backendUrl}/${book.filePath}`
-  //   : null;
-
-  const fileUrl = book?.bookFile
-  ? `${backendUrl}/uploads/books/${book.bookFile}`
-  : book?.filePath
-  ? `${backendUrl}/${book.filePath}`
-  : null;
+  // ✅ Build full file URL from saved book.filePath (e.g., "books/filename.pdf")
+  const fileUrl = book?.filePath ? `${backendUrl}/uploads/${book.filePath}` : null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded-lg shadow-md max-w-4xl w-full relative overflow-y-auto max-h-[90vh]">
-        {/* ❌ Close Button */}
+        {/* Close Button */}
         <button
           onClick={handleClose}
           className="absolute top-2 right-3 text-xl text-gray-600 hover:text-red-500"
@@ -45,7 +36,7 @@ const ReadBookPopup = ({ book }) => {
               src={fileUrl}
               title="PDF Preview"
               className="w-full h-[600px] border rounded"
-            ></iframe>
+            />
           ) : (
             <img
               src={fileUrl}
