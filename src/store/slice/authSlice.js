@@ -1,3 +1,4 @@
+// ✅ Final Fixed authSlice.js - Cookie-based Auth Only (No localStorage/sessionStorage)
 import { createSlice } from "@reduxjs/toolkit";
 import axiosInstance from "../../utils/axiosConfig"; // Uses baseURL + withCredentials
 
@@ -212,6 +213,7 @@ export const logout = () => async (dispatch) => {
     dispatch(resetAuthSlice());
   }
 };
+
 export const getUser = () => async (dispatch) => {
   try {
     dispatch(getUserRequest());
@@ -222,11 +224,10 @@ export const getUser = () => async (dispatch) => {
     const message = err?.response?.data?.message;
 
     if (status === 400 && message === "User is not authenticated") {
-      dispatch(getUserFailed(null)); // Not an error
+      dispatch(getUserFailed(null));
       return;
     }
 
-    console.error("getUser error:", message || err.message);
     dispatch(getUserFailed(message || "Failed to fetch user"));
   }
 };

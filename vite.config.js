@@ -9,7 +9,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://your-render-backend.onrender.com',
+        target: 'https://mini-backend-a8ay.onrender.com', 
         changeOrigin: true,
         secure: true,
       },
