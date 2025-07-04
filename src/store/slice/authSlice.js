@@ -134,6 +134,8 @@ export const login = (data) => async (dispatch) => {
     dispatch(loginRequest());
     const { data: res } = await axiosInstance.post(`/auth/login`, data, { withCredentials: true });
     dispatch(loginSuccess(res));
+    await dispatch(getUser());
+
   } catch (err) {
     dispatch(loginFailed(err?.response?.data?.message || "Login failed"));
   }
