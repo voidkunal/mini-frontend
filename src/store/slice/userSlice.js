@@ -1,33 +1,42 @@
+// src/redux/slices/userSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import axiosInstance from "../../utils/axiosConfig"; // ✅ Correct instance
+import axiosInstance from "../../utils/axiosConfig";
 import { toggleAddNewAdminPopup } from "./popupSlice";
+
+const initialState = {
+  users: [],
+  loading: false,
+  error: null,
+};
 
 const userSlice = createSlice({
   name: "user",
-  initialState: {
-    users: [],
-    loading: false,
-  },
+  initialState,
   reducers: {
-    fetchAllUsersRequest(state) {
+    fetchAllUsersRequest: (state) => {
       state.loading = true;
+      state.error = null;
     },
-    fetchAllUsersSuccess(state, action) {
+    fetchAllUsersSuccess: (state, action) => {
       state.loading = false;
       state.users = action.payload;
     },
-    fetchAllUsersFailed(state) {
+    fetchAllUsersFailed: (state, action) => {
       state.loading = false;
+      state.error = action.payload || "Failed to fetch users.";
     },
-    addNewAdminRequest(state) {
+
+    addNewAdminRequest: (state) => {
       state.loading = true;
+      state.error = null;
     },
-    addNewAdminSuccess(state) {
+    addNewAdminSuccess: (state) => {
       state.loading = false;
     },
-    addNewAdminFailed(state) {
+    addNewAdminFailed: (state, action) => {
       state.loading = false;
+      state.error = action.payload || "Failed to add admin.";
     },
   },
 });
@@ -41,7 +50,9 @@ export const {
   addNewAdminFailed,
 } = userSlice.actions;
 
-// ✅ Thunks
+export default userSlice.reducer;
+
+// ------------------- Thunks -------------------
 
 export const fetchAllUsers = () => async (dispatch) => {
   dispatch(fetchAllUsersRequest());
@@ -49,9 +60,10 @@ export const fetchAllUsers = () => async (dispatch) => {
     const res = await axiosInstance.get("/user/all");
     dispatch(fetchAllUsersSuccess(res.data.users));
   } catch (err) {
-    console.error("⚠️ fetchAllUsers error:", err.response?.data || err.message);
-    dispatch(fetchAllUsersFailed());
-    toast.error(err?.response?.data?.message || "Failed to fetch users");
+    const msg = err?.response?.data?.message || err.message || "Failed to fetch users";
+    console.error("⚠️ fetchAllUsers error:", msg);
+    dispatch(fetchAllUsersFailed(msg));
+    toast.error(msg);
   }
 };
 
@@ -67,9 +79,8 @@ export const addNewAdmin = (formData) => async (dispatch) => {
     toast.success(res.data.message || "Admin added successfully");
     dispatch(toggleAddNewAdminPopup());
   } catch (err) {
-    dispatch(addNewAdminFailed());
-    toast.error(err?.response?.data?.message || "Failed to add admin");
+    const msg = err?.response?.data?.message || err.message || "Failed to add admin";
+    dispatch(addNewAdminFailed(msg));
+    toast.error(msg);
   }
 };
-
-export default userSlice.reducer;
