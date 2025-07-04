@@ -156,7 +156,6 @@
 
 // export default BookManagement;
 
-// ✅ Final Responsive BookManagement.jsx (Production Safe + Mobile Ready)
 import React, { useEffect, useState } from "react";
 import { BookA, NotebookPen } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -235,10 +234,8 @@ const BookManagement = () => {
 
   return (
     <>
-      <main className="relative flex-1 p-4 pt-28 sm:p-6">
-        <Header />
-
-        {/* Top Bar: Title + Add Book + Search */}
+      <Header />
+      <main className="ml-64 pt-24 px-6 pb-8">
         <header className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
           <h2 className="text-xl font-semibold">
             {user?.role === "Admin" ? "Book Management" : "Books"}
@@ -250,9 +247,7 @@ const BookManagement = () => {
                 onClick={() => dispatch(toggleAddBookPopup())}
                 className="flex items-center justify-center gap-2 px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-gray-800 transition w-full sm:w-auto"
               >
-                <span className="bg-white text-black w-[25px] h-[25px] text-lg flex items-center justify-center rounded-full">
-                  +
-                </span>
+                <span className="bg-white text-black w-[25px] h-[25px] text-lg flex items-center justify-center rounded-full">+</span>
                 Add Book
               </button>
             )}
@@ -266,7 +261,6 @@ const BookManagement = () => {
           </div>
         </header>
 
-        {/* Book Table */}
         {loading ? (
           <p className="text-lg text-gray-600 mt-10">Loading...</p>
         ) : books?.length > 0 ? (
