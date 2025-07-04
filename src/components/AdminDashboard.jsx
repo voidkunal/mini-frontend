@@ -162,7 +162,8 @@
 
 // export default AdminDashboard;
 
-// ✅ AdminDashboard.jsx (Books Stats Version)
+
+// ✅ AdminDashboard.jsx (Fixed Pie Chart + Renamed Stats)
 import React, { useEffect, useState } from "react";
 import adminIcon from "../assets/pointing.png";
 import usersIcon from "../assets/people-black.png";
@@ -182,6 +183,7 @@ import {
   ArcElement,
 } from "chart.js";
 import Header from "../layout/Header";
+import { fetchUsersBorrowedBooks } from "../store/slice/borrowSlice";
 
 ChartJS.register(
   CategoryScale,
@@ -204,28 +206,33 @@ const AdminDashboard = () => {
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalAdmin, setTotalAdmin] = useState(0);
   const [totalBooks, setTotalBooks] = useState(0);
-  const [totalAddedBooks, setTotalAddedBooks] = useState(0);
-  const [totalRemovedBooks, setTotalRemovedBooks] = useState(0);
+  const [addedBooks, setAddedBooks] = useState(0);
+  const [removedBooks, setRemovedBooks] = useState(0);
+
+  useEffect(() => {
+    dispatch(fetchUsersBorrowedBooks());
+  }, [dispatch]);
 
   useEffect(() => {
     const userCount = users?.filter((u) => u.role === "user").length || 0;
     const adminCount = users?.filter((u) => u.role === "Admin").length || 0;
 
-    const addedBooks = books?.filter((book) => book.createdBy === user?._id).length || 0;
-    const removedBooks = books?.filter((book) => book.removed === true).length || 0;
+    // Assuming quantity > 0 = added, quantity === 0 = removed (mock logic)
+    const added = books?.filter((b) => b.quantity > 0).length || 0;
+    const removed = books?.filter((b) => b.quantity === 0).length || 0;
 
     setTotalUsers(userCount);
     setTotalAdmin(adminCount);
     setTotalBooks(books?.length || 0);
-    setTotalAddedBooks(addedBooks);
-    setTotalRemovedBooks(removedBooks);
-  }, [users, books, user?._id]);
+    setAddedBooks(added);
+    setRemovedBooks(removed);
+  }, [users, books]);
 
   const data = {
     labels: ["Total Added Books", "Total Removed Books"],
     datasets: [
       {
-        data: [totalAddedBooks, totalRemovedBooks],
+        data: [addedBooks, removedBooks],
         backgroundColor: ["#3D3E3E", "#151619"],
         hoverOffset: 4,
       },
@@ -243,10 +250,27 @@ const AdminDashboard = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Chart */}
-        <div className="bg-white shadow-lg rounded-xl p-4 flex flex-col items-center">
+        <div className="bg-white shadow-lg rounded-xl p-4 flex flex-col items-center min-h-[380px]">
           <h2 className="text-lg font-semibold mb-4 text-gray-800">Books Stats</h2>
-          <div className="w-full max-w-xs">
-            <Pie data={data} options={{ cutout: 60 }} />
+          <div className="w-full flex justify-center items-center min-h-[250px]">
+            <Pie
+              data={data}
+              options={{
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    position: "bottom",
+                    labels: {
+                      usePointStyle: true,
+                      padding: 20,
+                    },
+                  },
+                },
+              }}
+              width={250}
+              height={250}
+            />
           </div>
           <div className="mt-6 text-sm text-gray-700 space-y-2">
             <div className="flex items-center gap-2">
