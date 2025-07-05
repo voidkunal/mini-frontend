@@ -1,4 +1,4 @@
-my index.css : @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+/* my index.css : @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -10,4 +10,27 @@ my index.css : @import url("https://fonts.googleapis.com/css2?family=Montserrat:
   font-style: normal;
   overflow-x: hidden;
   box-sizing: border-box;
+} */
+
+
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: "Montserrat", serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  box-sizing: border-box;
+  overflow-x: hidden; /* keep this to avoid side scroll */
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: auto; /* ✅ allow scroll globally */
 }
